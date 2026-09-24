@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://supplylink-api.onrender.com/api/:path*"
+      "destination": "https://e-commerce-platform-bpmu.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://supplylink-api.onrender.com/uploads/:path*"
+      "destination": "https://e-commerce-platform-bpmu.onrender.com/uploads/:path*"
     },
     {
       "source": "/(.*)",

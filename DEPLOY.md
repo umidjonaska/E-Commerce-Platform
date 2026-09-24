@@ -115,10 +115,10 @@ Ya'ni migratsiyalar **avtomatik** qo'llanadi — Neon bazasi bo'sh bo'lsa ham ja
 ### 3.5. Tekshirish
 
 ```bash
-curl https://supplylink-api.onrender.com/health
+curl https://e-commerce-platform-bpmu.onrender.com/health
 ```
 
-`{"status":"ok"}` qaytishi kerak. Swagger: `https://supplylink-api.onrender.com/docs`
+`{"status":"ok"}` qaytishi kerak. Swagger: `https://e-commerce-platform-bpmu.onrender.com/docs`
 
 ---
 
@@ -159,7 +159,7 @@ ildizida `package.json` qidirib, `ENOENT` xatosi bilan to'xtardi.
 `web/vercel.json` da backend manzili yozilgan:
 
 ```json
-{ "source": "/api/:path*", "destination": "https://supplylink-api.onrender.com/api/:path*" }
+{ "source": "/api/:path*", "destination": "https://e-commerce-platform-bpmu.onrender.com/api/:path*" }
 ```
 
 Agar Render'dagi servis nomingiz `supplylink-api` dan boshqacha bo'lsa, `web/vercel.json` dagi **ikkala** `destination` ni o'z manzilingizga almashtiring va commit qiling — Vercel avtomatik qayta deploy qiladi.
