@@ -20,7 +20,7 @@ Do'kon egasi  ──(Telegram Mini App)──▶  Buyurtma  ──▶  Diller  �
 | Frontend | React 19, TypeScript, Vite, TanStack Query | `web/` |
 | Telegram bot | aiogram 3 | `bot/` |
 | Ma'lumotlar bazasi | PostgreSQL 16 | `migrations/` |
-| Testlar | pytest (125 ta) | `tests/` |
+| Testlar | pytest (131 ta) | `tests/` |
 
 ---
 
@@ -164,6 +164,16 @@ python -m bot.main
 
 > Bot bir vaqtda faqat **bitta** joyda ishlashi kerak. Docker'dagisi ishlayotgan bo'lsa,
 > avval `docker compose stop bot` qiling — aks holda Telegram `TelegramConflictError` beradi.
+
+---
+
+## Bulutga joylashtirish
+
+Vercel (frontend) + Render (backend) + Neon (baza) uchun qadamma-qadam
+qo'llanma: **[DEPLOY.md](DEPLOY.md)**.
+
+Tayyor konfiguratsiya fayllari: `render.yaml` (Render Blueprint) va
+`web/vercel.json` (SPA fallback hamda `/api`, `/uploads` proxy'si).
 
 ---
 

@@ -20,6 +20,8 @@ SQLALCHEMY_DATABASE_URL = URL.create(
     host=settings.database.db_host,
     port=settings.database.db_port,
     database=settings.database.db_database,
+    # psycopg2 `sslmode` ni to'g'ridan-to'g'ri tushunadi (Neon/Render uchun "require")
+    query={"sslmode": settings.database.db_sslmode},
 ).render_as_string(hide_password=False)
 
 # configparser '%' belgisini interpolatsiya qiladi, shuning uchun escape qilinadi

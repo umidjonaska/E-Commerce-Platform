@@ -1,0 +1,82 @@
+# Render Blueprint - https://render.com/docs/blueprint-spec
+#
+# Dashboard -> New -> Blueprint -> shu repository'ni tanlang.
+# Render ikkala servisni ham shu fayl bo'yicha yaratadi.
+#
+# DIQQAT: "sync: false" bo'lgan o'zgaruvchilarni Render dashboard'ida qo'lda
+# kiritasiz - ular maxfiy, shuning uchun ataylab repoda saqlanmaydi.
+
+services:
+  # ---------- Backend (FastAPI) ----------
+  - type: web
+    name: supplylink-api
+    runtime: docker
+    repo: https://github.com/umidjonaska/E-Commerce-Platform
+    dockerfilePath: ./app/Dockerfile
+    dockerContext: .
+    # Frankfurt - O'zbekistonga eng yaqin bepul region
+    region: frankfurt
+    plan: free
+    healthCheckPath: /health
+    # Har deploy'da migratsiyalar avtomatik qo'llanadi
+    dockerCommand: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL          # Neon connection string
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true        # Render 32+ belgili tasodifiy qiymat yaratadi
+      - key: BOT_TOKEN
+        sync: false
+      - key: ALLOWED_ORIGINS       # Vercel domeni, masalan https://supplylink.vercel.app
+        sync: false
+      - key: WEBAPP_URL            # o'sha Vercel domeni
+        sync: false
+      - key: ADMIN_CHAT_IDS
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: DB_CONNECTION
+        value: postgresql+asyncpg
+      - key: DB_CONNECTION_ALEMBIC
+        value: postgresql+psycopg2
+      - key: APP_NAME
+        value: SupplyLink
+      - key: APP_TIMEZONE
+        value: Asia/Tashkent
+      - key: DEBUG
+        value: "False"
+      - key: NOTIFY_ENABLED
+        value: "True"
+      - key: UPLOAD_DIR
+        value: /var/data/uploads   # pastdagi disk bilan bir xil bo'lishi shart
+    # Mahsulot rasmlari deploy'dan keyin ham saqlanib qolishi uchun.
+    # Disk faqat pullik instansiyalarda ishlaydi - bepul rejada bu blokni
+    # va UPLOAD_DIR ni o'chiring (rasmlar har deploy'da yo'qoladi).
+    disk:
+      name: uploads
+      mountPath: /var/data
+      sizeGB: 1
+
+  # ---------- Telegram bot ----------
+  # Worker Render'da faqat pullik (starter) rejada mavjud.
+  # Bepul muqobil uchun DEPLOY.md dagi "Bot" bo'limiga qarang.
+  - type: worker
+    name: supplylink-bot
+    runtime: docker
+    repo: https://github.com/umidjonaska/E-Commerce-Platform
+    dockerfilePath: ./bot/Dockerfile
+    dockerContext: .
+    region: frankfurt
+    plan: starter
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
+      - key: ADMIN_CHAT_IDS
+        sync: false
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: supplylink-api
+          property: hostport

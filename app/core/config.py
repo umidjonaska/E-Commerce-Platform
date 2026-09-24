@@ -7,6 +7,7 @@ tipidagi maydonlarda (masalan ALLOWED_ORIGINS="a,b") JSON kutib, ilovani
 ishga tushmaydigan qilib qo'yadi.
 """
 from typing import Optional
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from environs import Env
 from pydantic import BaseModel, Field
@@ -33,6 +34,38 @@ def _chat_ids(raw: str) -> list[int]:
     return [int(part) for part in (p.strip() for p in raw.split(",")) if part.lstrip("-").isdigit()]
 
 
+def _database_url_parts() -> dict:
+    """`DATABASE_URL` ni alohida qismlarga ajratadi.
+
+    Render, Neon, Railway kabi platformalar bazani bitta satr ko'rinishida beradi:
+    `postgresql://user:parol@host/dbname?sslmode=require`. U berilgan bo'lsa,
+    DB_HOST/DB_PORT/... ni qo'lda yozish shart emas.
+    """
+    raw = env.str("DATABASE_URL", "").strip()
+    if not raw:
+        return {}
+
+    parsed = urlsplit(raw)
+    if not parsed.hostname or not parsed.path.strip("/"):
+        raise RuntimeError(
+            "DATABASE_URL noto'g'ri formatda. Kutilgan ko'rinish: "
+            "postgresql://user:parol@host:5432/dbname"
+        )
+
+    # Parol ichidagi %40 kabi belgilar dekodlanadi; URL.create ularni keyin qayta escape qiladi
+    return {
+        "host": parsed.hostname,
+        "port": parsed.port or 5432,
+        "username": unquote(parsed.username or ""),
+        "password": unquote(parsed.password) if parsed.password else None,
+        "database": unquote(parsed.path.lstrip("/")),
+        "sslmode": (parse_qs(parsed.query).get("sslmode") or ["prefer"])[0],
+    }
+
+
+_db_url = _database_url_parts()
+
+
 # APP parametrlari
 class AppSettings(BaseModel):
     app_name: str = _str("APP_NAME", "SupplyLink")
@@ -47,13 +80,20 @@ class AppSettings(BaseModel):
 
 # Baza ma`umotlari
 class DatabaseSettings(BaseModel):
-    db_connection: str = env.str("DB_CONNECTION")
-    db_host: str = env.str("DB_HOST")
-    db_port: int = env.int("DB_PORT")
-    db_database: str = env.str("DB_DATABASE")
-    db_username: str = env.str("DB_USERNAME")
-    db_password: Optional[str] = Field(default=env.str("DB_PASSWORD", None))
+    # `or` qisqa tutashuvi tufayli DATABASE_URL berilgan bo'lsa env.str(...) umuman
+    # chaqirilmaydi - ya'ni DB_HOST va boshqalari majburiy bo'lmay qoladi.
+    db_connection: str = _str("DB_CONNECTION", "postgresql+asyncpg")
+    db_host: str = _db_url.get("host") or env.str("DB_HOST")
+    db_port: int = _db_url.get("port") or env.int("DB_PORT", 5432)
+    db_database: str = _db_url.get("database") or env.str("DB_DATABASE")
+    db_username: str = _db_url.get("username") or env.str("DB_USERNAME")
+    db_password: Optional[str] = Field(
+        default=_db_url.get("password") or env.str("DB_PASSWORD", None)
+    )
     db_charset: str = _str("DB_CHARSET", "utf8")
+    # Neon, Render kabi boshqariladigan bazalar TLS talab qiladi ("require").
+    # Lokal Docker Postgres uchun "prefer" yetarli.
+    db_sslmode: str = _str("DB_SSLMODE", _db_url.get("sslmode", "prefer"))
     # SQL so'rovlarini logga chiqarish (faqat debug uchun)
     echo: bool = env.bool("SQL_ECHO", False)
 

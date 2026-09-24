@@ -14,12 +14,17 @@ SQLALCHEMY_DATABASE_URL = URL.create(
     database=config.database.db_database,
 )
 
+# asyncpg `sslmode` nomini bilmaydi, u shu qiymatlarni `ssl` sifatida qabul qiladi.
+# Neon/Render kabi boshqariladigan bazalar uchun DB_SSLMODE=require bo'ladi.
+_connect_args = {"ssl": config.database.db_sslmode} if "asyncpg" in config.database.db_connection else {}
+
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
     echo=config.database.echo,
     pool_size=20,
     max_overflow=20,
     pool_pre_ping=True,
+    connect_args=_connect_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(
