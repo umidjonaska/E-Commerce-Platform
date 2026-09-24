@@ -135,7 +135,8 @@ Frontend Vercel CLI orqali deploy qilingan:
 | GitHub | `umidjonaska/E-Commerce-Platform` ga ulangan |
 
 > `supplylink.vercel.app` domeni band ekan (boshqa foydalanuvchiniki), shuning uchun
-> hisob nomi qo'shilgan `supplylink-umidjon5.vercel.app` ishlatilmoqda.
+> Vercel loyihaga qo'shimcha nom berdi. Ikkala alias ham bir xil deployment'ga
+> ishora qiladi, farqi yo'q.
 
 **Deployment Protection o'chirildi.** Vercel yangi loyihalarga standart ravishda
 `ssoProtection` qo'yadi — u bilan saytga faqat Vercel hisobiga kirgan odam kira
