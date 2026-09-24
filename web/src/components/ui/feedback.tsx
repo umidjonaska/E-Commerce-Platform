@@ -143,26 +143,37 @@ export function Modal({
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // `onClose` ota komponentda odatda har renderda yangi funksiya bo'ladi. Uni effekt
+  // bog'liqligiga qo'ysak, formada har harf yozilganda effekt qayta ishlab, fokusni
+  // inputdan modal panelga tortib olardi. Shuning uchun so'nggi qiymat ref'da turadi.
+  const onCloseRef = useRef(onClose)
+  useEffect(() => {
+    onCloseRef.current = onClose
+  })
+
+  // Fokus va aylanishni bloklash faqat modal ochilganda/yopilganda ishlaydi.
   useEffect(() => {
     if (!open) return
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') onCloseRef.current()
     }
     document.addEventListener('keydown', onKey)
 
     // Ortqa fon aylanmasligi uchun
-    const previous = document.body.style.overflow
+    const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
-    // Fokusni modal ichiga olib kiramiz
+    // Fokusni modal ichiga olib kiramiz va yopilganda avvalgi joyiga qaytaramiz
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
     panelRef.current?.focus()
 
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = previous
+      document.body.style.overflow = previousOverflow
+      opener?.focus?.()
     }
-  }, [open, onClose])
+  }, [open])
 
   if (!open) return null
 
