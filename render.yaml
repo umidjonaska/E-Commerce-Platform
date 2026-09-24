@@ -27,7 +27,7 @@ services:
         generateValue: true        # Render 32+ belgili tasodifiy qiymat yaratadi
       - key: BOT_TOKEN
         sync: false
-      - key: ALLOWED_ORIGINS       # Vercel domeni, masalan https://supplylink.vercel.app
+      - key: ALLOWED_ORIGINS       # Vercel domeni, masalan https://supplylink-umidjon5.vercel.app
         sync: false
       - key: WEBAPP_URL            # o'sha Vercel domeni
         sync: false
