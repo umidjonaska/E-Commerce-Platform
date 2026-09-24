@@ -39,7 +39,7 @@ Telegram foydalanuvchi
 ```
 
 > **Holat:** frontend allaqachon deploy qilingan —
-> **https://supplylink-umidjon5.vercel.app** (4-qadamga qarang).
+> **https://supplylink-coral.vercel.app** (4-qadamga qarang).
 > Backend va baza hali yaratilmagan, shuning uchun hozir saytga kirib bo'lmaydi:
 > login so'rovi mavjud bo'lmagan API'ga ketadi. 2- va 3-qadamlarni bajarganingizdan
 > keyin hammasi ulanadi.
@@ -89,7 +89,7 @@ Render `sync: false` belgilangan o'zgaruvchilarni sizdan so'raydi:
 |---|---|
 | `DATABASE_URL` | Neon'dan olingan satr (2-qadam) |
 | `BOT_TOKEN` | @BotFather bergan token |
-| `ALLOWED_ORIGINS` | Vercel domeni, masalan `https://supplylink-umidjon5.vercel.app` |
+| `ALLOWED_ORIGINS` | Vercel domeni, masalan `https://supplylink-coral.vercel.app` |
 | `WEBAPP_URL` | xuddi shu Vercel domeni |
 | `ADMIN_CHAT_IDS` | xatolik xabarlari keladigan Telegram chat ID (ixtiyoriy) |
 
@@ -128,7 +128,8 @@ Frontend Vercel CLI orqali deploy qilingan:
 
 | | |
 |---|---|
-| **Manzil** | **https://supplylink-umidjon5.vercel.app** |
+| **Manzil** | **https://supplylink-coral.vercel.app** |
+| Qo'shimcha alias | https://supplylink-umidjon5.vercel.app |
 | Vercel loyihasi | `umidjon5/supplylink` |
 | Manba papkasi | `web/` |
 | GitHub | `umidjonaska/E-Commerce-Platform` ga ulangan |
@@ -168,8 +169,8 @@ Agar Render'dagi servis nomingiz `supplylink-api` dan boshqacha bo'lsa, `web/ver
 
 Endi Vercel domeni ma'lum. Render → `supplylink-api` → **Environment**:
 
-- `ALLOWED_ORIGINS` = `https://supplylink-umidjon5.vercel.app`
-- `WEBAPP_URL` = `https://supplylink-umidjon5.vercel.app`
+- `ALLOWED_ORIGINS` = `https://supplylink-coral.vercel.app,https://supplylink-umidjon5.vercel.app`
+- `WEBAPP_URL` = `https://supplylink-coral.vercel.app`
 
 **Save** → Render avtomatik qayta ishga tushadi.
 
@@ -183,7 +184,7 @@ Render'ning bepul rejasida Shell yo'q. Shuning uchun skriptni **o'z kompyutering
 DATABASE_URL="postgresql://...neon.tech/supplylink?sslmode=require" ./venv/Scripts/python.exe -m app.scripts.create_superadmin --username umidjon
 ```
 
-Parol so'raladi (kamida 10 belgi). Shundan keyin `https://supplylink-umidjon5.vercel.app` ga o'sha login/parol bilan kirasiz.
+Parol so'raladi (kamida 10 belgi). Shundan keyin `https://supplylink-coral.vercel.app` ga o'sha login/parol bilan kirasiz.
 
 ---
 
@@ -201,7 +202,7 @@ Mini App tugmasini bot jarayonisiz ham sozlash mumkin:
 
 1. Telegram'da [@BotFather](https://t.me/BotFather) ni oching
 2. `/mybots` → botingiz → **Bot Settings** → **Menu Button** → **Configure menu button**
-3. URL: `https://supplylink-umidjon5.vercel.app`, matn: `Buyurtma`
+3. URL: `https://supplylink-coral.vercel.app`, matn: `Buyurtma`
 
 Shundan keyin foydalanuvchi chatdagi menyu tugmasi orqali Mini App'ni ochadi. **Kamchiligi:** `/start` yozilganda bot javob bermaydi.
 
@@ -215,7 +216,7 @@ Botni alohida servis sifatida emas, backend ichida webhook orqali ishlatish mumk
 
 ## 7-qadam. Telegram Mini App'ni ro'yxatdan o'tkazish
 
-1. @BotFather → `/mybots` → botingiz → **Bot Settings** → **Menu Button** → URL: `https://supplylink-umidjon5.vercel.app`
+1. @BotFather → `/mybots` → botingiz → **Bot Settings** → **Menu Button** → URL: `https://supplylink-coral.vercel.app`
 2. (Ixtiyoriy) `/newapp` orqali Mini App yaratib, unga nom, tavsif va rasm bering.
 
 Telegram **faqat HTTPS** manzilni qabul qiladi — Vercel domeni allaqachon HTTPS, shuning uchun qo'shimcha sozlash kerak emas.
