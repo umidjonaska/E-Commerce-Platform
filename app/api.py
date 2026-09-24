@@ -5,6 +5,7 @@ xatolik handlerlari. Shu sababli `app.api:app` ham, `app.main:app` ham bir xil
 ishlaydi - biri ikkinchisidan "kamroq sozlangan" bo'lib qolmaydi.
 """
 import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import APIRouter, FastAPI, Request
@@ -19,12 +20,13 @@ from starlette.responses import JSONResponse
 
 from app.core.config import config
 
-from app.routes import user
+from app.routes import telegram, user
 
 from app.routes.v1 import admin, auth as auth_v1, catalog, diller, me, orders
 
 from app.auth import login
 from app.services.alerts import send_error_alert
+from app.services.telegram_webhook import telegram_webhook
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +49,7 @@ api = APIRouter()
 #Users
 api.include_router(user.router, tags=["Users"])
 api.include_router(login.auth_route, tags=["Auth"])
+api.include_router(telegram.router, tags=["Telegram"])
 
 # SupplyLink API (Mini App, diller va superadmin dashboardlari)
 v1 = APIRouter(prefix="/api/v1")
@@ -57,6 +60,16 @@ v1.include_router(orders.router, tags=["Orders"])
 v1.include_router(diller.router, tags=["Diller"])
 v1.include_router(admin.router, tags=["Superadmin"])
 
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    # Webhook sozlanmagan bo'lsa (lokal, testlar) ikkalasi ham hech narsa qilmaydi
+    await telegram_webhook.startup()
+    try:
+        yield
+    finally:
+        await telegram_webhook.shutdown()
+
+
 app = FastAPI(
     title=config.app.app_name,
     description=f"{config.app.app_name} API",
@@ -64,7 +77,8 @@ app = FastAPI(
     docs_url='/docs',  # None - dokumentatsiyani o`chirish
     redoc_url='/redoc',  # None - dokumentatsiyani o`chirish
     debug=config.debug,
-    default_response_class=ORJSONResponse
+    default_response_class=ORJSONResponse,
+    lifespan=lifespan,
 )
 
 # Corsga faqat sozlangan originlarga ruxsat beriladi. Auth Bearer token bilan

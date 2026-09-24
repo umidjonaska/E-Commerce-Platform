@@ -11,12 +11,39 @@ import pytest
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Ishlab chiquvchining lokal .env fayli natijaga ta'sir qilmasligi kerak.
+# environs muhitda allaqachon bor o'zgaruvchini .env dan qayta o'qimaydi, shuning
+# uchun .env berishi mumkin bo'lgan har bir qiymat shu yerda aniq belgilanadi.
+# (Bo'sh qiymat = "berilmagan": config ularni standart qiymat bilan almashtiradi.)
+BASELINE_ENV = {
+    "SECRET_KEY": "t" * 40,
+    "DEBUG": "False",
+    "DATABASE_URL": "",
+    "DB_SSLMODE": "",
+    "DB_CONNECTION": "postgresql+asyncpg",
+    "DB_HOST": "127.0.0.1",
+    "DB_PORT": "5432",
+    "DB_DATABASE": "supplylink",
+    "DB_USERNAME": "postgres",
+    "DB_PASSWORD": "",
+    "ALLOWED_ORIGINS": "",
+    "ADMIN_CHAT_IDS": "",
+    "UPLOAD_DIR": "",
+    "BOT_WEBHOOK_BASE_URL": "",
+    "RENDER_EXTERNAL_URL": "",
+}
+
+
+def clean_env(**env_overrides: str) -> dict:
+    env = {**os.environ, **BASELINE_ENV, **env_overrides}
+    env["PYTHONPATH"] = PROJECT_ROOT
+    env["PYTHONIOENCODING"] = "utf-8"
+    return env
+
 
 def load_config(expression: str, **env_overrides: str) -> str:
     """Toza jarayonda configni yuklab, berilgan ifodani hisoblab qaytaradi."""
-    env = {**os.environ, **env_overrides}
-    env["PYTHONPATH"] = PROJECT_ROOT
-    env["PYTHONIOENCODING"] = "utf-8"
+    env = clean_env(**env_overrides)
 
     result = subprocess.run(
         [sys.executable, "-c", f"from app.core.config import config; print({expression})"],
@@ -89,7 +116,7 @@ def test_upload_dir_is_separate_from_private_media():
 
 
 def test_short_secret_key_is_rejected_in_production():
-    env = {**os.environ, "SECRET_KEY": "qisqa", "DEBUG": "False", "PYTHONPATH": PROJECT_ROOT}
+    env = clean_env(SECRET_KEY="qisqa", DEBUG="False")
     result = subprocess.run(
         [sys.executable, "-c", "from app.core.config import config"],
         capture_output=True,
@@ -111,9 +138,7 @@ def test_short_secret_key_is_rejected_in_production():
 
 def load_config_error(**env_overrides: str) -> str:
     """Config yuklanishi xato bilan tugashini kutadi va stderr ni qaytaradi."""
-    env = {**os.environ, **env_overrides}
-    env["PYTHONPATH"] = PROJECT_ROOT
-    env["PYTHONIOENCODING"] = "utf-8"
+    env = clean_env(**env_overrides)
 
     result = subprocess.run(
         [sys.executable, "-c", "from app.core.config import config"],
@@ -177,3 +202,30 @@ def test_separate_db_variables_still_work_without_database_url():
     )
 
     assert output == "('127.0.0.1', 'supplylink')"
+
+
+# ---------- Telegram webhook manzili ----------
+
+
+def test_webhook_base_url_comes_from_render_automatically():
+    output = load_config(
+        "config.telegram.webhook_base_url",
+        RENDER_EXTERNAL_URL="https://e-commerce-platform-bpmu.onrender.com/",
+    )
+
+    # oxiridagi "/" olib tashlanadi, aks holda manzil "//telegram/webhook" bo'lardi
+    assert output == "https://e-commerce-platform-bpmu.onrender.com"
+
+
+def test_explicit_webhook_base_url_wins_over_render():
+    output = load_config(
+        "config.telegram.webhook_base_url",
+        RENDER_EXTERNAL_URL="https://x.onrender.com",
+        BOT_WEBHOOK_BASE_URL="https://api.example.uz",
+    )
+
+    assert output == "https://api.example.uz"
+
+
+def test_webhook_base_url_is_empty_locally():
+    assert load_config("repr(config.telegram.webhook_base_url)") == "''"

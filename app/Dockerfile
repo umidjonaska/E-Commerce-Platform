@@ -15,6 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Endi butun loyiha kodi nusxalanadi
 COPY app/ ./app/
+# Bot backend ichida webhook orqali ishlaydi (app/services/telegram_webhook.py)
+COPY bot/ ./bot/
 COPY migrations/ ./migrations/
 COPY alembic.ini .
 

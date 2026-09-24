@@ -13,7 +13,7 @@ Loyihada to'rtta komponent bor va ularning har biri boshqa turdagi xizmat talab 
 | **Frontend** (`web/`) | Statik React SPA — Mini App, diller va admin panellari | **Vercel** | Ha |
 | **Backend** (`app/`) | FastAPI, doim ishlab turishi kerak | **Render** (Web Service) | Ha, cheklovlar bilan |
 | **Baza** | PostgreSQL | **Neon** | Ha |
-| **Bot** (`bot/`) | Telegram `/start` ishlovchisi | Render Worker yoki webhook | Pullik / muqobil bor |
+| **Bot** (`bot/`) | Telegram `/start` ishlovchisi | Backend ichida (webhook) | Ha |
 
 ### Neon haqidagi savolga javob
 
@@ -26,7 +26,7 @@ Loyihada to'rtta komponent bor va ularning har biri boshqa turdagi xizmat talab 
 ```
 Telegram foydalanuvchi
       |
-      +-- /start --------------> bot (Render Worker / webhook)
+      +-- /start --------------> Render (backend, /telegram/webhook)
       |
       +-- Mini App tugmasi ----> Vercel (React SPA)
                                       |
@@ -75,11 +75,7 @@ postgresql://supplylink_owner:AbC123xyz@ep-cool-forest-a2b3c4.eu-central-1.aws.n
 1. [render.com](https://render.com) → **Sign up with GitHub**.
 2. **New** → **Blueprint**.
 3. `umidjonaska/E-Commerce-Platform` repositoriysini tanlang.
-4. Render repodagi `render.yaml` ni o'qib, ikkita servisni taklif qiladi:
-   - `supplylink-api` (web)
-   - `supplylink-bot` (worker)
-
-   **Bepul rejada worker ishlamaydi.** Agar hozir to'lov qilmoqchi bo'lmasangiz, `supplylink-bot` ni ro'yxatdan chiqarib tashlang (yoki `render.yaml` dagi ikkinchi servis blokini olib tashlang) va 6-qadamdagi muqobil variantdan foydalaning.
+4. Render repodagi `render.yaml` ni o'qib, `supplylink-api` (web) servisini yaratadi. Bot uchun alohida servis kerak emas — u shu backend ichida ishlaydi (6-qadam).
 
 ### 3.2. Muhit o'zgaruvchilari
 
@@ -189,29 +185,33 @@ Parol so'raladi (kamida 10 belgi). Shundan keyin `https://supplylink-coral.verce
 
 ---
 
-## 6-qadam. Bot
+## 6-qadam. Bot ✅ avtomatik
 
-Bot `/start` buyrug'iga javob beradi va Mini App tugmasini ko'rsatadi. Buyurtma bildirishnomalarini **backend** o'zi yuboradi, shuning uchun bot jarayoni to'xtasa ham buyurtmalar ishlayveradi.
+Bot alohida servis sifatida deploy qilinmaydi — u **backend ichida webhook orqali** ishlaydi:
 
-### Variant A — Render Worker (eng ishonchli, ~$7/oy)
+1. Backend ishga tushganda Render bergan `RENDER_EXTERNAL_URL` ni o'qiydi
+2. Telegram'ga `https://<backend>/telegram/webhook` manzilini maxfiy kalit bilan ro'yxatdan o'tkazadi
+3. Buyruqlar ro'yxatini va chat yonidagi **Buyurtma** menyu tugmasini sozlaydi
 
-`render.yaml` da allaqachon tayyor. `supplylink-bot` servisini Blueprint'dan yarating, `BOT_TOKEN` va `WEBAPP_URL` ni kiriting. Boshqa hech narsa kerak emas.
+Qo'shimcha sozlama yoki to'lov kerak emas — Render'dagi `BOT_TOKEN` va `WEBAPP_URL` yetarli.
 
-### Variant B — Botsiz, faqat BotFather (butunlay bepul)
+**Tekshirish:** Render loglarida shu qator chiqishi kerak:
 
-Mini App tugmasini bot jarayonisiz ham sozlash mumkin:
+```
+Telegram webhook o'rnatildi: https://e-commerce-platform-bpmu.onrender.com/telegram/webhook
+```
 
-1. Telegram'da [@BotFather](https://t.me/BotFather) ni oching
-2. `/mybots` → botingiz → **Bot Settings** → **Menu Button** → **Configure menu button**
-3. URL: `https://supplylink-coral.vercel.app`, matn: `Buyurtma`
+**Bepul rejada:** backend 15 daqiqa harakatsizlikdan keyin uxlaydi. Shunda birinchi `/start` ga javob ~30–60 soniya kechikadi — Telegram so'rovi backendni uyg'otadi. Xabar yo'qolmaydi.
 
-Shundan keyin foydalanuvchi chatdagi menyu tugmasi orqali Mini App'ni ochadi. **Kamchiligi:** `/start` yozilganda bot javob bermaydi.
+**Render'dan boshqa hostingda** webhook manzilini qo'lda bering: `BOT_WEBHOOK_BASE_URL=https://api.sizning-domen.uz`.
 
-### Variant C — Webhook rejimi (bepul, lekin kod qo'shish kerak)
+### Bitta token — bitta rejim
 
-Botni alohida servis sifatida emas, backend ichida webhook orqali ishlatish mumkin — o'shanda qo'shimcha to'lov kerak bo'lmaydi. Buning uchun `app/` ga kichik webhook endpoint qo'shish talab qilinadi (hozir yozilmagan). Bepul rejada backend uxlab qolgani uchun birinchi `/start` ga javob ~50 soniya kechikadi.
+Telegram bir token uchun yo webhook, yo polling qabul qiladi. Shuning uchun:
 
-**Tavsiya:** sinov bosqichida **Variant B**, haqiqiy ishga tushirishda **Variant A**.
+- Lokal sinov uchun **alohida test bot** tokenidan foydalaning.
+- Agar lokal `python -m bot.main` (yoki Docker'dagi `bot` servisi) production tokeni bilan ishga tushsa, u webhook o'rnatilganini ko'radi va **polling'ni ataylab boshlamaydi** — aks holda production botni o'chirib qo'yardi. Logda sababi yoziladi.
+- Webhookni ataylab polling'ga almashtirish kerak bo'lsa: `BOT_FORCE_POLLING=1`.
 
 ---
 
@@ -250,7 +250,7 @@ Telegram **faqat HTTPS** manzilni qabul qiladi — Vercel domeni allaqachon HTTP
 | **Birinchi ochilish ~50 soniya** | Render free 15 daqiqadan keyin uxlaydi | Starter rejaga o'tish (~$7/oy) |
 | **Mahsulot rasmlari yo'qoladi** | Render free'da disk vaqtinchalik, har deploy'da tozalanadi | Starter + Disk, yoki Cloudflare R2 / S3 |
 | **Baza ham uxlaydi** | Neon free avtomatik to'xtaydi | Birinchi so'rov ~0.5 soniya sekin — jiddiy emas |
-| **Bot ishlamaydi** | Worker bepul emas | Variant B yoki A |
+| **Birinchi `/start` sekin** | Uxlab qolgan backend uyg'onadi | Starter rejaga o'tish (~$7/oy) |
 
 > **Rasmlar haqida ogohlantirish:** bepul Render'da fayl tizimi har deploy'da nolga qaytadi. `render.yaml` da `disk` bloki va `UPLOAD_DIR=/var/data/uploads` yozilgan — bu **faqat pullik rejada** ishlaydi. Bepul rejada bo'lsangiz, `render.yaml` dan `disk` blokini va `UPLOAD_DIR` o'zgaruvchisini olib tashlang; rasmlar vaqtincha saqlanadi, lekin har yangilanishda yo'qoladi.
 
@@ -258,10 +258,9 @@ Telegram **faqat HTTPS** manzilni qabul qiladi — Vercel domeni allaqachon HTTP
 
 | Konfiguratsiya | Narx |
 |---|---|
-| To'liq bepul (sinov uchun) | **$0** — sekin, rasmlar yo'qoladi, bot cheklangan |
+| To'liq bepul (sinov uchun) | **$0** — sekin uyg'onadi, rasmlar yo'qoladi |
 | Backend Starter + bepul baza va frontend | **~$7** — rasmlar saqlanadi, uxlamaydi |
-| Backend + Bot Worker | **~$14** |
-| Yuqoridagilar + Neon Launch | **~$33** — jiddiy foydalanish uchun |
+| Backend Starter + Neon Launch | **~$26** — jiddiy foydalanish uchun |
 
 Narxlar o'zgarib turadi — to'lovdan oldin Render va Neon saytlaridagi joriy tariflarni tekshiring.
 

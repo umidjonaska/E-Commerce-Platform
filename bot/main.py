@@ -1,56 +1,51 @@
+"""Botni polling rejimida ishga tushirish (lokal ishlab chiqish yoki alohida worker).
+
+Productionda bot backend ichida webhook orqali ishlaydi. Bir token uchun
+Telegram faqat bitta rejimni qo'llaydi: polling boshlash webhookni o'chiradi.
+Shuning uchun token'da webhook o'rnatilgan bo'lsa, polling ataylab
+boshlanmaydi - aks holda lokal nusxa production botni "o'g'irlab" qo'yadi.
+"""
 import asyncio
 import logging
-
-from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram.types import BotCommand, MenuButtonWebApp, WebAppInfo
+import os
 
 from bot.config import config
-from bot.handlers import start
+from bot.dispatcher import create_bot, create_dispatcher, setup
 
 logger = logging.getLogger(__name__)
 
-COMMANDS = [
-    BotCommand(command="start", description="Ilovani ochish"),
-    BotCommand(command="help", description="Yordam"),
-]
 
-
-async def setup(bot: Bot) -> None:
-    await bot.set_my_commands(COMMANDS)
-
-    if config.webapp_ready:
-        # Chat yonidagi menyu tugmasi ham Mini App'ni ochadi
-        await bot.set_chat_menu_button(
-            menu_button=MenuButtonWebApp(text="Buyurtma", web_app=WebAppInfo(url=config.webapp_url))
-        )
-    else:
-        # Telegram web_app tugmasi uchun HTTPS majburiy: http:// va localhost qabul qilinmaydi.
-        reason = "bo'sh" if not config.webapp_url else f"HTTPS emas ({config.webapp_url})"
-        logger.warning(
-            "Mini App tugmasi ko'rsatilmaydi, chunki WEBAPP_URL %s. "
-            "Frontendni HTTPS domenga joylashtiring yoki lokal sinov uchun tunnel oching "
-            "(masalan: cloudflared tunnel --url http://localhost:5173), so'ng .env dagi "
-            "WEBAPP_URL ga o'sha https:// manzilni yozing va `docker compose up -d bot` qiling.",
-            reason,
-        )
+def _force_polling() -> bool:
+    return os.getenv("BOT_FORCE_POLLING", "").strip().lower() in {"1", "true", "yes"}
 
 
 async def main():
     logging.basicConfig(level=logging.INFO)
 
-    bot = Bot(
-        token=config.token,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
-    )
-    dp = Dispatcher()
+    bot = create_bot(config.token)
+    dp = create_dispatcher()
 
-    dp.include_router(start.router)
+    try:
+        webhook = await bot.get_webhook_info()
+        if webhook.url and not _force_polling():
+            logger.error(
+                "Bu token uchun webhook o'rnatilgan: %s. Bot production backend orqali "
+                "ishlayapti, shuning uchun polling BOSHLANMADI (u webhookni o'chirib, "
+                "production botni to'xtatib qo'yardi). Lokal sinov uchun alohida test "
+                "bot tokenidan foydalaning. Webhookni ataylab almashtirish kerak bo'lsa: "
+                "BOT_FORCE_POLLING=1.",
+                webhook.url,
+            )
+            # Chiqib ketsak, `restart: unless-stopped` konteynerni qayta-qayta ishga
+            # tushiradi. Jim kutib turish - loglarni to'ldirmaydi.
+            await asyncio.Event().wait()
+            return
 
-    await setup(bot)
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+        await setup(bot)
+        await bot.delete_webhook(drop_pending_updates=True)
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":

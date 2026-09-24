@@ -114,6 +114,10 @@ class TelegramSettings(BaseModel):
     alert_chat_ids: list[int] = _chat_ids(env.str("ADMIN_CHAT_IDS", ""))
     # Bir xil xatolik shu soniya ichida faqat bir marta xabar qilinadi
     alert_throttle_seconds: int = env.int("ALERT_THROTTLE_SECONDS", 300)
+    # Bot webhook rejimida backend ichida ishlaydi (alohida doimiy jarayon kerak emas).
+    # Render bu manzilni RENDER_EXTERNAL_URL orqali o'zi beradi; boshqa hostingda
+    # BOT_WEBHOOK_BASE_URL bilan ko'rsatiladi. Bo'sh bo'lsa webhook o'chiq (lokal).
+    webhook_base_url: str = _str("BOT_WEBHOOK_BASE_URL", env.str("RENDER_EXTERNAL_URL", "")).rstrip("/")
 
 
 # CORS: front nginx orqali bir origin'da bo'lsa kerak emas, dev uchun kerak

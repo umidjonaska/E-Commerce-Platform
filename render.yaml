@@ -57,26 +57,7 @@ services:
       mountPath: /var/data
       sizeGB: 1
 
-  # ---------- Telegram bot ----------
-  # Worker Render'da faqat pullik (starter) rejada mavjud.
-  # Bepul muqobil uchun DEPLOY.md dagi "Bot" bo'limiga qarang.
-  - type: worker
-    name: supplylink-bot
-    runtime: docker
-    repo: https://github.com/umidjonaska/E-Commerce-Platform
-    dockerfilePath: ./bot/Dockerfile
-    dockerContext: .
-    region: frankfurt
-    plan: starter
-    envVars:
-      - key: BOT_TOKEN
-        sync: false
-      - key: WEBAPP_URL
-        sync: false
-      - key: ADMIN_CHAT_IDS
-        sync: false
-      - key: API_BASE_URL
-        fromService:
-          type: web
-          name: supplylink-api
-          property: hostport
+  # Telegram bot alohida servis emas: u backend ichida webhook orqali ishlaydi
+  # (app/services/telegram_webhook.py). Render RENDER_EXTERNAL_URL ni o'zi
+  # beradi, backend ishga tushganda webhookni shu manzilga o'rnatadi.
+  # Alohida polling worker QO'SHMANG - bitta token uchun ikki rejim to'qnashadi.
