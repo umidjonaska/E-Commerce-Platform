@@ -1,0 +1,41 @@
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+}
+
+.identityText {
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  overflow-wrap: anywhere;
+}
+
+.phone {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.infoList {
+  padding: 0 var(--sp-4);
+}
+
+.editLink {
+  font-size: var(--fs-sm);
+  color: var(--c-brand);
+  font-weight: var(--fw-medium);
+}
+
+.noDiller {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+}
+
+.dillerNote {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}

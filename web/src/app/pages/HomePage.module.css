@@ -1,0 +1,235 @@
+.greeting {
+  padding-top: calc(var(--sp-5) + var(--safe-top));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hello {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.shopName {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.dillerChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: var(--sp-2);
+  padding: 4px var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--c-brand-soft);
+  border: 1px solid var(--c-brand-border);
+  color: var(--c-brand);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------------- Kategoriya to'ri ---------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+@media (min-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: transform var(--transition), background var(--transition);
+  min-width: 0;
+}
+
+.categoryCard:active {
+  transform: scale(0.98);
+  background: var(--c-surface-2);
+}
+
+.categoryIcon {
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: var(--sp-2);
+}
+
+.categoryName {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+.categoryCount {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.categorySkeleton {
+  height: 104px;
+  border-radius: var(--r-lg);
+  background: var(--c-surface-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.categorySkeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--c-surface-3), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+/* ---------------- Ro'yxat ---------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.chevron {
+  color: var(--c-text-muted);
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+
+.inCart {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: var(--r-full);
+  background: var(--c-brand);
+  color: #fff;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.seeAll {
+  font-size: var(--fs-sm);
+  color: var(--c-brand);
+  font-weight: var(--fw-medium);
+}
+
+/* ---------------- Oxirgi buyurtma ---------------- */
+
+.lastOrder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+
+.lastOrder:active {
+  background: var(--c-surface-2);
+}
+
+.lastOrderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.lastOrderId {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.lastOrderBottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.lastOrderItems {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.lastOrderTotal {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------- Savat banneri ---------------- */
+
+.cartBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-brand);
+  color: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-md);
+}
+
+.cartBanner:active {
+  filter: brightness(0.95);
+}
+
+.cartBannerIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.cartBannerText {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cartBanner .chevron {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------------- Sahifalash ---------------- */
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+}
+
+.pagerInfo {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  font-variant-numeric: tabular-nums;
+}

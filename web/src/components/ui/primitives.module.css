@@ -1,0 +1,424 @@
+/* ---------------- Button ---------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border-radius: var(--r-md);
+  font-weight: var(--fw-medium);
+  border: 1px solid transparent;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  opacity: 0.55;
+}
+
+.sm {
+  height: 32px;
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-sm);
+}
+
+.md {
+  height: 40px;
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-md);
+}
+
+.lg {
+  height: 48px;
+  padding: 0 var(--sp-5);
+  font-size: var(--fs-base);
+}
+
+.block {
+  width: 100%;
+}
+
+.primary {
+  background: var(--c-brand);
+  color: #fff;
+  border-color: var(--c-brand);
+}
+.primary:hover:not(:disabled) {
+  background: var(--c-brand-hover);
+  border-color: var(--c-brand-hover);
+}
+
+.secondary {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border-strong);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--c-surface-2);
+  border-color: var(--c-text-muted);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--c-text-secondary);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+}
+
+.danger {
+  background: var(--c-danger);
+  color: #fff;
+  border-color: var(--c-danger);
+}
+.danger:hover:not(:disabled) {
+  background: var(--c-danger-hover);
+  border-color: var(--c-danger-hover);
+}
+
+.success {
+  background: var(--c-success);
+  color: #fff;
+  border-color: var(--c-success);
+}
+.success:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.loading {
+  cursor: progress;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--r-full);
+  animation: spin 600ms linear infinite;
+  opacity: 0.8;
+}
+
+.standaloneSpinner {
+  display: inline-block;
+  border: 2px solid var(--c-border-strong);
+  border-top-color: var(--c-brand);
+  border-radius: var(--r-full);
+  animation: spin 650ms linear infinite;
+}
+
+/* ---------------- Card ---------------- */
+
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-xs);
+}
+
+.cardPadded {
+  padding: var(--sp-5);
+}
+
+@media (max-width: 640px) {
+  .cardPadded {
+    padding: var(--sp-4);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.cardHeaderText {
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+}
+
+.cardSubtitle {
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.cardAction {
+  flex: 0 0 auto;
+}
+
+/* ---------------- Badge ---------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: currentColor;
+}
+
+.tone_neutral {
+  background: var(--c-surface-2);
+  color: var(--c-text-secondary);
+  border-color: var(--c-border);
+}
+.tone_brand {
+  background: var(--c-brand-soft);
+  color: var(--c-brand);
+  border-color: var(--c-brand-border);
+}
+.tone_success {
+  background: var(--c-success-soft);
+  color: var(--c-success);
+  border-color: var(--c-success-border);
+}
+.tone_warning {
+  background: var(--c-warning-soft);
+  color: var(--c-warning);
+  border-color: var(--c-warning-border);
+}
+.tone_danger {
+  background: var(--c-danger-soft);
+  color: var(--c-danger);
+  border-color: var(--c-danger-border);
+}
+.tone_info {
+  background: var(--c-info-soft);
+  color: var(--c-info);
+  border-color: var(--c-info-border);
+}
+
+/* ---------------- Status ---------------- */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px var(--sp-3);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.statusSm {
+  padding: 1px var(--sp-2);
+  font-size: 11px;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+.status_pending {
+  color: var(--c-status-pending-fg);
+  background: var(--c-status-pending-bg);
+  border-color: var(--c-status-pending-bd);
+}
+
+.status_confirmed {
+  color: var(--c-status-confirmed-fg);
+  background: var(--c-status-confirmed-bg);
+  border-color: var(--c-status-confirmed-bd);
+}
+
+.status_delivered {
+  color: var(--c-status-delivered-fg);
+  background: var(--c-status-delivered-bg);
+  border-color: var(--c-status-delivered-bd);
+}
+
+.status_cancelled {
+  color: var(--c-status-cancelled-fg);
+  background: var(--c-status-cancelled-bg);
+  border-color: var(--c-status-cancelled-bd);
+}
+
+/* ---------------- Avatar ---------------- */
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--r-full);
+  background: var(--c-brand-soft);
+  color: var(--c-brand);
+  font-weight: var(--fw-semibold);
+  flex: 0 0 auto;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------- InfoRow ---------------- */
+
+.infoRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  flex: 0 0 auto;
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.infoValue {
+  text-align: right;
+  font-size: var(--fs-md);
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.infoLink {
+  color: var(--c-brand);
+  text-decoration: none;
+}
+
+.infoLink:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- StatTile ---------------- */
+
+.statTile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--sh-xs);
+  min-width: 0;
+}
+
+.statLabel {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.statValue {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.statHint {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.statSkeleton {
+  display: block;
+  height: 30px;
+  width: 70%;
+  border-radius: var(--r-sm);
+  background: var(--c-surface-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.statSkeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--c-surface-3), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+.statTone_brand {
+  border-color: var(--c-brand-border);
+}
+.statTone_brand .statValue {
+  color: var(--c-brand);
+}
+
+.statTone_warning {
+  border-color: var(--c-warning-border);
+}
+.statTone_warning .statValue {
+  color: var(--c-warning);
+}
+
+.statTone_success {
+  border-color: var(--c-success-border);
+}
+.statTone_success .statValue {
+  color: var(--c-success);
+}
+
+.statTone_danger {
+  border-color: var(--c-danger-border);
+}
+.statTone_danger .statValue {
+  color: var(--c-danger);
+}
+
+.statTone_info {
+  border-color: var(--c-info-border);
+}
+
+.statTone_neutral {
+  border-color: var(--c-border);
+}

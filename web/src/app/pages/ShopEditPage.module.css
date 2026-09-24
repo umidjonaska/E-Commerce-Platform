@@ -1,0 +1,36 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.locationOk {
+  font-size: var(--fs-sm);
+  color: var(--c-success);
+  font-variant-numeric: tabular-nums;
+}
+
+.clearLocation {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+  text-decoration: underline;
+}
+
+.note {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}

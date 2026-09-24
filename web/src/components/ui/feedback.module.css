@@ -1,0 +1,241 @@
+/* ---------------- Skeleton ---------------- */
+
+.skeleton {
+  display: block;
+  background: var(--c-surface-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--c-surface-3), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* ---------------- Markaziy yuklanish ---------------- */
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12) var(--sp-4);
+  min-height: 180px;
+}
+
+.centerText {
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+}
+
+/* ---------------- Bo'sh / xato holati ---------------- */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-2);
+  padding: var(--sp-10) var(--sp-5);
+  animation: fade-in 200ms ease-out;
+}
+
+.stateCompact {
+  padding: var(--sp-6) var(--sp-4);
+}
+
+.stateIcon {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: var(--sp-1);
+}
+
+.stateTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+}
+
+.stateText {
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+  max-width: 380px;
+  overflow-wrap: anywhere;
+}
+
+.stateAction {
+  margin-top: var(--sp-3);
+}
+
+.errorState .stateTitle {
+  color: var(--c-danger);
+}
+
+/* ---------------- Banner ---------------- */
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--c-danger-soft);
+  border: 1px solid var(--c-danger-border);
+  animation: fade-in 160ms ease-out;
+}
+
+.bannerIcon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-full);
+  background: var(--c-danger);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  margin-top: 2px;
+}
+
+.bannerText {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-md);
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+.bannerClose {
+  flex: 0 0 auto;
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ---------------- Modal ---------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  animation: fade-in 140ms ease-out;
+  overflow-y: auto;
+}
+
+.modal {
+  background: var(--c-surface);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--sh-lg);
+  width: 100%;
+  max-height: calc(100dvh - 2 * var(--sp-4));
+  display: flex;
+  flex-direction: column;
+  animation: slide-up 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.modal_sm {
+  max-width: 420px;
+}
+.modal_md {
+  max-width: 560px;
+}
+.modal_lg {
+  max-width: 760px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--c-border);
+  flex: 0 0 auto;
+}
+
+.modalTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.modalClose {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--c-text-muted);
+  display: grid;
+  place-items: center;
+  transition: background var(--transition), color var(--transition);
+}
+
+.modalClose:hover {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+}
+
+.modalBody {
+  padding: var(--sp-5);
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--c-border);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.confirmText {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+  line-height: var(--lh-normal);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal {
+    max-width: none;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: 92dvh;
+  }
+
+  .modalFooter {
+    padding-bottom: calc(var(--sp-4) + var(--safe-bottom));
+  }
+
+  .modalFooter > * {
+    flex: 1 1 auto;
+  }
+}

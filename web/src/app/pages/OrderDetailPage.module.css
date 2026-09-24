@@ -1,0 +1,225 @@
+.successBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-success-soft);
+  border: 1px solid var(--c-success-border);
+  border-radius: var(--r-lg);
+  animation: slide-up 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.successIcon {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-full);
+  background: var(--c-success);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: var(--fw-bold);
+}
+
+.successBanner strong {
+  display: block;
+  font-size: var(--fs-md);
+  color: var(--c-text);
+}
+
+.successBanner p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  margin-top: 2px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.created {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+/* ---------------- Timeline ---------------- */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  position: relative;
+  padding-bottom: var(--sp-4);
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+/* Nuqtalarni bog'lovchi chiziq */
+.timelineItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 22px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--c-border);
+}
+
+.timelineDone:not(:last-child)::before {
+  background: var(--c-success);
+}
+
+.timelineDot {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-full);
+  border: 2px solid var(--c-border-strong);
+  background: var(--c-surface);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: #fff;
+  z-index: 1;
+}
+
+.timelineDone .timelineDot {
+  background: var(--c-success);
+  border-color: var(--c-success);
+}
+
+.timelineText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  padding-top: 1px;
+}
+
+.timelineLabel {
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+}
+
+.timelineDone .timelineLabel {
+  color: var(--c-text);
+  font-weight: var(--fw-medium);
+}
+
+.timelineTime {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+/* ---------------- Bekor qilingan ---------------- */
+
+.cancelledCard {
+  background: var(--c-danger-soft);
+  border-color: var(--c-danger-border);
+}
+
+.cancelledTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--c-danger);
+}
+
+.cancelledTime {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.cancelledReason {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+  margin-top: var(--sp-2);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------- Mahsulotlar ---------------- */
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.itemName {
+  grid-column: 1;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.itemQty {
+  grid-column: 1;
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.itemTotal {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  font-size: var(--fs-lg);
+}
+
+.total strong {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.infoList {
+  padding: 0 var(--sp-4);
+}
+
+/* ---------------- Amallar ---------------- */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.lockNote {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+}

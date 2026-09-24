@@ -107,8 +107,8 @@ async def test_get_all_users_requires_auth(client):
 
 
 @pytest.mark.asyncio
-async def test_get_all_users_with_auth(authorized_client, existing_user):
-    response = await authorized_client.get("/users/")
+async def test_get_all_users_with_superadmin(superadmin_client, existing_user):
+    response = await superadmin_client.get("/users/")
 
     assert response.status_code == 200
     data = response.json()
@@ -131,10 +131,70 @@ async def test_get_one_user_with_auth(authorized_client, existing_user):
 
 
 @pytest.mark.asyncio
-async def test_get_one_user_not_found(authorized_client):
-    response = await authorized_client.get("/users/9999/")
+async def test_get_one_user_not_found(superadmin_client):
+    response = await superadmin_client.get("/users/9999/")
 
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_get_all_users_forbidden_for_regular_user(authorized_client):
+    response = await authorized_client.get("/users/")
+
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_get_other_user_forbidden_for_regular_user(authorized_client):
+    response = await authorized_client.get("/users/9999/")
+
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_update_self_cannot_change_role(authorized_client, existing_user):
+    """Privilege escalation: oddiy user o'z rolini o'zgartira olmaydi."""
+    response = await authorized_client.put("/users/", json={"role": "superadmin", "full_name": "Hacker"})
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["role"] == "user"
+    assert data["full_name"] == "Hacker"
+
+
+@pytest.mark.asyncio
+async def test_delete_user_requires_auth(client, existing_user):
+    response = await client.delete(f"/users/{existing_user.id}")
+
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_delete_user_forbidden_for_regular_user(authorized_client, existing_user):
+    response = await authorized_client.delete(f"/users/{existing_user.id}")
+
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_create_admin_returns_user(superadmin_client):
+    response = await superadmin_client.post(
+        "/users/admin",
+        json={"username": "newdiller", "email": "nd@mail.ru", "role": "diller", "password_hash": "12345678"},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["role"] == "diller"
+
+
+@pytest.mark.asyncio
+async def test_create_admin_forbidden_for_regular_user(authorized_client):
+    response = await authorized_client.post(
+        "/users/admin",
+        json={"username": "x", "email": "x@mail.ru", "role": "admin", "password_hash": "12345678"},
+    )
+
+    assert response.status_code == 403
 
 
 @pytest.mark.asyncio

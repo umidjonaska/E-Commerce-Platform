@@ -22,7 +22,7 @@ class User(BaseModel):
 
 class UserResponse(BaseModel):
     id: int
-    email: str
+    email: Optional[str] = None
     username: Optional[str] = None
     role: str
 

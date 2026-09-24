@@ -38,7 +38,7 @@ async def test_create_user(repo, service):
     fake_user = MagicMock()
     fake_user.id = 1
 
-    with patch("services.user.get_password_hash", return_value="hashed_password"):
+    with patch("app.services.user.get_password_hash", return_value="hashed_password"):
         repo.create_user.return_value = fake_user
 
         result = await service.create_user(payload)

@@ -1,6 +1,7 @@
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
+from sqlalchemy.engine import URL
 from sqlalchemy import pool
 
 from alembic import context
@@ -12,24 +13,25 @@ config = context.config
 
 # SQLALCHEMY_DATABASE_URL = f'{settings.alembic.ab_connection}://{settings.database.db_username}:{settings.database.db_password}@{settings.database.db_host}:{settings.database.db_port}/{settings.database.db_database}?charset={settings.database.db_charset}'
 
-SQLALCHEMY_DATABASE_URL = (
-    f'{settings.alembic.ab_connection}://'
-    f'{settings.database.db_username}:{settings.database.db_password}@'
-    f'{settings.database.db_host}:{settings.database.db_port}/'
-    f'{settings.database.db_database}'
-)
+SQLALCHEMY_DATABASE_URL = URL.create(
+    drivername=settings.alembic.ab_connection,
+    username=settings.database.db_username,
+    password=settings.database.db_password,
+    host=settings.database.db_host,
+    port=settings.database.db_port,
+    database=settings.database.db_database,
+).render_as_string(hide_password=False)
 
-config.set_main_option('sqlalchemy.url', SQLALCHEMY_DATABASE_URL)
+# configparser '%' belgisini interpolatsiya qiladi, shuning uchun escape qilinadi
+config.set_main_option('sqlalchemy.url', SQLALCHEMY_DATABASE_URL.replace('%', '%%'))
 
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from app.models.comment import Comment
-from app.models.post import Post
-from app.models.user import User
-from app.models.media import Media
-from app.models.order import Order
+from app.models import (  # noqa: F401  (barcha modellar metadata uchun yuklanadi)
+    User, Shop, DillerProfile, Category, Product, Order, OrderItem,
+)
 
 target_metadata = Base.metadata
 

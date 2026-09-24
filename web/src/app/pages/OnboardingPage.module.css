@@ -1,0 +1,227 @@
+.page {
+  min-height: 100dvh;
+  padding: calc(var(--sp-6) + var(--safe-top)) var(--sp-4) calc(var(--sp-6) + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.intro,
+.form {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  animation: slide-up 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------------- Intro ---------------- */
+
+.intro {
+  text-align: center;
+  gap: var(--sp-3);
+}
+
+.introIcon {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.introTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+}
+
+.introText {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+  text-align: left;
+}
+
+.steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+
+.steps strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.steps p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: 1px;
+}
+
+.stepNum {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r-full);
+  background: var(--c-brand-soft);
+  color: var(--c-brand);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  display: grid;
+  place-items: center;
+}
+
+/* ---------------- Form ---------------- */
+
+.formHeader {
+  margin-bottom: var(--sp-1);
+}
+
+.progress {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--c-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formTitle {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+}
+
+.formHint {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: var(--sp-1);
+}
+
+.formActions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.grow {
+  flex: 1 1 auto;
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.locationOk {
+  font-size: var(--fs-sm);
+  color: var(--c-success);
+  font-variant-numeric: tabular-nums;
+}
+
+.savingNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.noDillers {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-4);
+}
+
+/* ---------------- Diller tanlash ---------------- */
+
+.dillerList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.dillerCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.dillerCard:active {
+  background: var(--c-surface-2);
+}
+
+.dillerActive {
+  border-color: var(--c-brand);
+  background: var(--c-brand-soft);
+}
+
+.dillerRadio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.dillerBody {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dillerName {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+.dillerMeta {
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.dillerCheck {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-full);
+  border: 1.5px solid var(--c-border-strong);
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: #fff;
+  margin-top: 2px;
+}
+
+.dillerActive .dillerCheck {
+  background: var(--c-brand);
+  border-color: var(--c-brand);
+}

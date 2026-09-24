@@ -1,0 +1,131 @@
+/* Diller va admin sahifalarida takrorlanadigan kichik uslublar */
+
+.cellStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.cellStrong {
+  font-weight: var(--fw-semibold);
+  overflow-wrap: break-word;
+}
+
+.cellMuted {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  overflow-wrap: break-word;
+}
+
+.section {
+  margin-top: var(--sp-6);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+
+@media (max-width: 640px) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.actionsCell {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.link {
+  color: var(--c-brand);
+  font-weight: var(--fw-medium);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-3);
+}
+
+.backLink:hover {
+  color: var(--c-text);
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.infoList {
+  padding: 0 var(--sp-1);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+
+.formFull {
+  grid-column: 1 / -1;
+}
+
+.imagePreview {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.imageBox {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--r-md);
+  object-fit: cover;
+  border: 1px solid var(--c-border);
+  background: var(--c-surface-2);
+}
+
+.imagePlaceholder {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--r-md);
+  border: 1px dashed var(--c-border-strong);
+  background: var(--c-surface-2);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: var(--c-text-muted);
+}
+
+.hiddenInput {
+  display: none;
+}

@@ -2,7 +2,6 @@ from fastapi import HTTPException
 from datetime import timezone, datetime
 
 from sqlalchemy import select, insert
-from sqlalchemy.orm import selectinload
 
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
@@ -17,7 +16,6 @@ class UserRepository(BaseRepository):
         query = (
             select(User)
             .where(User.is_deleted == False)
-            .options(selectinload(User.posts))
         )
         if page_params:
             return await pagination(self.session, query, page_params)
@@ -29,7 +27,6 @@ class UserRepository(BaseRepository):
         query = (
             select(User)
             .where(User.id == user_id, User.is_deleted == False)
-            .options(selectinload(User.posts))
         )
         result = await self.session.execute(query)
         return result.scalar_one_or_none()

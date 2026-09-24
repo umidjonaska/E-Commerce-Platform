@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Design tokens — butun ilova (Mini App, Diller, Admin) shu qiymatlardan oziqlanadi.
+   Telegram Mini App ichida ranglar Telegram mavzusiga moslanadi (telegram.ts).
+   ========================================================================== */
+
+:root {
+  /* ---- Neytral shkala ---- */
+  --c-bg: #f7f8fa;
+  --c-surface: #ffffff;
+  --c-surface-2: #f2f4f7;
+  --c-surface-3: #e9ecf1;
+  --c-border: #e3e7ee;
+  --c-border-strong: #cdd4e0;
+
+  --c-text: #111827;
+  --c-text-secondary: #4b5563;
+  --c-text-muted: #8b94a6;
+  --c-text-inverse: #ffffff;
+
+  /* ---- Brend ---- */
+  --c-brand: #2563eb;
+  --c-brand-hover: #1d4ed8;
+  --c-brand-active: #1e40af;
+  --c-brand-soft: #eaf1ff;
+  --c-brand-border: #c2d7ff;
+
+  /* ---- Semantik ---- */
+  --c-success: #0f9d58;
+  --c-success-soft: #e4f5ec;
+  --c-success-border: #b7e3cb;
+
+  --c-warning: #b45309;
+  --c-warning-soft: #fdf3e2;
+  --c-warning-border: #f2d7a8;
+
+  --c-danger: #dc2626;
+  --c-danger-hover: #b91c1c;
+  --c-danger-soft: #fdeceb;
+  --c-danger-border: #f6c6c2;
+
+  --c-info: #0e7490;
+  --c-info-soft: #e3f4f8;
+  --c-info-border: #b3e0ea;
+
+  /* ---- Buyurtma holatlari (vizual jihatdan aniq farqlanadi) ---- */
+  --c-status-pending-fg: #b45309;
+  --c-status-pending-bg: #fdf3e2;
+  --c-status-pending-bd: #f2d7a8;
+
+  --c-status-confirmed-fg: #1d4ed8;
+  --c-status-confirmed-bg: #eaf1ff;
+  --c-status-confirmed-bd: #c2d7ff;
+
+  --c-status-delivered-fg: #0f7a45;
+  --c-status-delivered-bg: #e4f5ec;
+  --c-status-delivered-bd: #b7e3cb;
+
+  --c-status-cancelled-fg: #6b7280;
+  --c-status-cancelled-bg: #f1f3f6;
+  --c-status-cancelled-bd: #dde1e8;
+
+  /* ---- Tipografika ---- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.875rem;
+  --fs-base: 0.9375rem;
+  --fs-lg: 1.0625rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 1.875rem;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+
+  /* ---- Oraliqlar ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* ---- Radius ---- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-full: 999px;
+
+  /* ---- Soyalar ---- */
+  --sh-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --sh-sm: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --sh-md: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.04);
+  --sh-lg: 0 12px 32px rgba(16, 24, 40, 0.12), 0 4px 8px rgba(16, 24, 40, 0.04);
+
+  --ring: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  --ring-danger: 0 0 0 3px rgba(220, 38, 38, 0.18);
+
+  /* ---- Layout ---- */
+  --header-h: 60px;
+  --sidebar-w: 248px;
+  --tabbar-h: 62px;
+  --content-max: 1400px;
+
+  --transition: 140ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Telegram xavfsiz zonalari (WebApp bo'lmasa 0) */
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+}
+
+/* ==========================================================================
+   Qorong'i rejim. Telegram mavzusi qorong'i bo'lsa `data-theme="dark"` qo'yiladi.
+   ========================================================================== */
+:root[data-theme='dark'] {
+  --c-bg: #15171c;
+  --c-surface: #1d2027;
+  --c-surface-2: #24282f;
+  --c-surface-3: #2c313a;
+  --c-border: #2e333c;
+  --c-border-strong: #3d434e;
+
+  --c-text: #eef1f6;
+  --c-text-secondary: #b3bac6;
+  --c-text-muted: #808897;
+  --c-text-inverse: #15171c;
+
+  --c-brand: #5b8def;
+  --c-brand-hover: #74a0f5;
+  --c-brand-active: #8fb4f8;
+  --c-brand-soft: #1e2a42;
+  --c-brand-border: #2f4670;
+
+  --c-success: #4ade80;
+  --c-success-soft: #16281f;
+  --c-success-border: #245437;
+
+  --c-warning: #fbbf24;
+  --c-warning-soft: #2a2213;
+  --c-warning-border: #574012;
+
+  --c-danger: #f87171;
+  --c-danger-hover: #fca5a5;
+  --c-danger-soft: #2c1919;
+  --c-danger-border: #5c2b2b;
+
+  --c-info: #38bdf8;
+  --c-info-soft: #14262e;
+  --c-info-border: #1f4a5c;
+
+  --c-status-pending-fg: #fbbf24;
+  --c-status-pending-bg: #2a2213;
+  --c-status-pending-bd: #574012;
+
+  --c-status-confirmed-fg: #7dabf8;
+  --c-status-confirmed-bg: #1e2a42;
+  --c-status-confirmed-bd: #2f4670;
+
+  --c-status-delivered-fg: #4ade80;
+  --c-status-delivered-bg: #16281f;
+  --c-status-delivered-bd: #245437;
+
+  --c-status-cancelled-fg: #9aa3b2;
+  --c-status-cancelled-bg: #23272e;
+  --c-status-cancelled-bd: #343a44;
+
+  --sh-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sh-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --sh-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --sh-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+
+  --ring: 0 0 0 3px rgba(91, 141, 239, 0.3);
+  --ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.3);
+}

@@ -1,0 +1,306 @@
+/* ---------------- Table ---------------- */
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  background: var(--c-surface);
+}
+
+.table {
+  width: 100%;
+  /* Minimal kenglik DataTable'da ustunlar soniga qarab beriladi.
+     Sig'masa sahifa emas, faqat shu o'ram gorizontal aylanadi. */
+  font-size: var(--fs-md);
+}
+
+.table td {
+  /* Yacheykadagi matn imkon qadar so'z chegarasida ko'chsin */
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--c-surface-2);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-text-muted);
+  border-bottom: 1px solid var(--c-border);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.table tbody td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--transition);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.table tbody tr.clickable:hover {
+  background: var(--c-surface-2);
+}
+
+.tableEmpty {
+  padding: var(--sp-8);
+  text-align: center;
+  color: var(--c-text-muted);
+  font-size: var(--fs-md);
+}
+
+/* Mobil kartalar — desktopda yashirin */
+.cards {
+  display: none;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  box-shadow: var(--sh-xs);
+}
+
+.card.clickable:active {
+  background: var(--c-surface-2);
+}
+
+.cardPrimary {
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.cardFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.cardField {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.cardField dt {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  flex: 0 0 auto;
+}
+
+.cardField dd {
+  font-size: var(--fs-md);
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 860px) {
+  .tableWrap {
+    display: none;
+  }
+  .cards {
+    display: flex;
+  }
+}
+
+/* ---------------- Pagination ---------------- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.pageInfo {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: var(--sp-3);
+}
+
+.pagination .pageInfo {
+  margin-top: 0;
+}
+
+.pageButtons {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* ---------------- Search ---------------- */
+
+/* Qidiruv maydoni ikki xil kontekstda ishlatiladi: dashboard toolbar'ida (qator)
+   va Mini App sahifalarida (ustun). Ustun flex ichida `flex-basis` BALANDLIKKA
+   aylanadi, shuning uchun asosiy holat oddiy blok bo'lib qoladi. */
+.search {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.toolbar .search {
+  width: auto;
+  flex: 1 1 220px;
+  max-width: 340px;
+}
+
+.searchClear {
+  position: absolute;
+  right: var(--sp-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+  padding: 4px;
+  line-height: 1;
+}
+
+.searchClear:hover {
+  color: var(--c-text);
+}
+
+/* ---------------- Tabs ---------------- */
+
+.tabs {
+  display: flex;
+  gap: var(--sp-1);
+  padding: 4px;
+  background: var(--c-surface-2);
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-border);
+}
+
+.tabsScroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabsScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-text-secondary);
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+  flex: 0 0 auto;
+}
+
+.tab:hover {
+  color: var(--c-text);
+}
+
+.tabActive {
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--sh-xs);
+}
+
+.tabCount {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-full);
+  background: var(--c-surface-3);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabActive .tabCount {
+  background: var(--c-brand-soft);
+  color: var(--c-brand);
+}
+
+/* ---------------- PageHeader / Toolbar ---------------- */
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  flex-wrap: wrap;
+}
+
+.pageHeaderText {
+  min-width: 0;
+}
+
+.pageTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.pageSubtitle {
+  margin-top: 2px;
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+}
+
+.pageHeaderAction {
+  flex: 0 0 auto;
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .pageTitle {
+    font-size: var(--fs-xl);
+  }
+
+  .toolbar {
+    gap: var(--sp-2);
+  }
+
+  .toolbar .search {
+    max-width: none;
+    flex-basis: 100%;
+  }
+}

@@ -1,0 +1,137 @@
+/* ---------------- Thumb ---------------- */
+
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-md);
+  object-fit: cover;
+  background: var(--c-surface-2);
+  flex: 0 0 auto;
+}
+
+.thumbFallback {
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+/* ---------------- Product row ---------------- */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: background var(--transition);
+  min-width: 0;
+}
+
+a.row:active {
+  background: var(--c-surface-2);
+}
+
+.rowText {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rowTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+.rowMeta {
+  font-size: var(--fs-sm);
+  color: var(--c-brand);
+  font-weight: var(--fw-medium);
+}
+
+.rowHint {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.rowRight {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* ---------------- Order card ---------------- */
+
+.orderCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: background var(--transition);
+}
+
+.orderCard:active {
+  background: var(--c-surface-2);
+}
+
+.orderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.orderId {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+}
+
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.orderItem {
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.orderMore {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.orderBottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-border);
+}
+
+.orderDate {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.orderTotal {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--c-text);
+  font-variant-numeric: tabular-nums;
+}

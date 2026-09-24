@@ -1,288 +1,314 @@
-# E-Commerce Platform
+# SupplyLink
 
-A small e-commerce application built with **FastAPI**.
+Dillerlar orqali ishlaydigan B2B buyurtma platformasi. Do'kon egalari Telegram Mini App
+orqali mahsulot buyurtma qiladi, dillerlar buyurtmalarni qabul qilib yetkazadi,
+administrator esa butun tizimni boshqaradi.
 
-I started this project to learn how a production-style backend is organized. Instead of putting everything into a single file, I separated the application into routes, services, repositories, models and schemas.
-
-Customers can browse products and place orders either through the website or using a Telegram bot. Every order is stored in PostgreSQL, and administrators are notified automatically. The project also includes Docker support, JWT authentication, Redis, and asynchronous background tasks using FastAPI's `BackgroundTasks`.
-
----
-
-## Features
-
-- JWT authentication
-- User registration and login
-- Product management
-- Media upload and local file storage
-- Place orders through the website
-- Place orders through the Telegram bot
-- Automatic order notifications for administrators
-- RESTful API
-- Swagger API documentation
-- PostgreSQL database
-- Docker & Docker Compose support
-- Alembic database migrations
-- Background tasks using FastAPI
-
----
-
-## Tech Stack
-
-| Category | Technology |
-|----------|------------|
-| Backend | FastAPI |
-| Database | PostgreSQL |
-| ORM | SQLAlchemy 2.0 |
-| Authentication | JWT |
-| Database Migration | Alembic |
-| Cache | Redis |
-| Background Tasks | FastAPI BackgroundTasks |
-| Telegram Bot | Aiogram |
-| Containerization | Docker & Docker Compose |
-| Frontend | HTML, CSS, JavaScript |
-
----
-
-## Project Structure
-
-```text
-MediaBlog/
-├── app/ # Main FastAPI backend application
-│ ├── main.py # Application entry point
-│ ├── api.py # API router configuration
-│ ├── deps.py # Dependency injection
-│ │
-│ ├── auth/ # Authentication module
-│ │ ├── login.py # Login and JWT authentication logic
-│ │ ├── schema.py # Authentication schemas
-│ │ └── services.py # Authentication services
-│ │
-│ ├── core/ # Core application settings
-│ │ ├── config.py # Environment configuration
-│ │ ├── base.py # Base classes
-│ │ ├── exception.py # Custom exceptions
-│ │ └── redis_cli.py # Redis client configuration
-│ │
-│ ├── database/ # Database connection
-│ │ └── database.py
-│ │
-│ ├── models/ # SQLAlchemy database models
-│ │ ├── user.py
-│ │ ├── post.py
-│ │ ├── comment.py
-│ │ ├── media.py
-│ │ └── order.py
-│ │
-│ ├── schemas/ # Pydantic request/response schemas
-│ │ ├── user.py
-│ │ ├── post.py
-│ │ ├── comment.py
-│ │ ├── media.py
-│ │ └── order.py
-│ │
-│ ├── repositories/ # Database access layer
-│ │ ├── user.py
-│ │ ├── post.py
-│ │ ├── comment.py
-│ │ ├── media.py
-│ │ └── order.py
-│ │
-│ ├── services/ # Business logic layer
-│ │ ├── user.py
-│ │ ├── post.py
-│ │ ├── comment.py
-│ │ ├── media.py
-│ │ └── order.py
-│ │
-│ ├── routes/ # API endpoints
-│ │ ├── user.py
-│ │ ├── post.py
-│ │ ├── comment.py
-│ │ ├── media.py
-│ │ └── order.py
-│ │
-│ ├── utils/ # Helper functions
-│ │ ├── file.py
-│ │ ├── media.py
-│ │ ├── pagination.py
-│ │ └── slack.py
-│ │
-│ └── scripts/
-│ └── create_superadmin.py # Create admin user script
-│
-├── bot/ # Telegram bot application
-│ ├── main.py
-│ ├── config.py
-│ │
-│ ├── handlers/ # Telegram message handlers
-│ ├── keyboards/ # Telegram keyboards
-│ ├── services/ # API communication services
-│ └── states/ # FSM states
-│
-├── frontend/ # Simple frontend interface
-│ ├── index.html
-│ ├── login.html
-│ ├── post.html
-│ │
-│ ├── admin/
-│ │ └── orders.html
-│ │
-│ └── assets/
-│ ├── css/
-│ │ └── style.css
-│ └── js/
-│ ├── api.js
-│ ├── auth.js
-│ ├── blog.js
-│ ├── login.js
-│ └── post.js
-│
-├── migrations/ # Alembic database migrations
-│ ├── env.py
-│ └── versions/
-│ ├── initial_schema.py
-│ ├── add_superadmin_role.py
-│ ├── add_orders_table.py
-│ └── soft_delete_migration.py
-│
-├── tests/ # Automated tests
-│ ├── conftest.py
-│ ├── test_main.py
-│ │
-│ ├── auth/
-│ ├── repositories/
-│ ├── routes/
-│ ├── services/
-│ └── utils/
-│
-├── media/ # Uploaded media files
-│ └── image/
-│
-├── Dockerfile
-├── docker-compose.yml # Docker services configuration
-├── requirements.txt # Python dependencies
-├── alembic.ini # Alembic configuration
-├── pytest.ini # Pytest configuration
-├── .env.example # Environment variables template
-└── README.md
+```
+Do'kon egasi  ──(Telegram Mini App)──▶  Buyurtma  ──▶  Diller  ──▶  Yetkazib berish
+                                            │
+                                            └──▶  SUPERADMIN (katalog, dillerlar, statistika)
 ```
 
 ---
 
-## Getting Started
+## Tarkib
 
-Clone the repository:
+| Qism | Texnologiya | Joylashuv |
+|---|---|---|
+| Backend API | FastAPI, SQLAlchemy 2.0 (async), Alembic | `app/` |
+| Frontend | React 19, TypeScript, Vite, TanStack Query | `web/` |
+| Telegram bot | aiogram 3 | `bot/` |
+| Ma'lumotlar bazasi | PostgreSQL 16 | `migrations/` |
+| Testlar | pytest (125 ta) | `tests/` |
+
+---
+
+## Rollar
+
+| Rol | Kirish usuli | Nima qila oladi |
+|---|---|---|
+| **Mijoz** (`user`) | Telegram Mini App | Ro'yxatdan o'tish, katalog, savat, buyurtma berish/tahrirlash/bekor qilish |
+| **Diller** (`diller`) | Login + parol | Buyurtmalarni qabul qilish/rad etish/yetkazish, o'z mijozlari, statistika |
+| **Administrator** (`superadmin`) | Login + parol | Dillerlar, mijozlar, katalog, barcha buyurtmalar, statistika |
+
+Rol tizimga kirgandan keyin avtomatik aniqlanadi va foydalanuvchi o'z bo'limiga yo'naltiriladi.
+
+---
+
+## Buyurtma hayot sikli
+
+```
+PENDING ──▶ CONFIRMED ──▶ DELIVERED
+   │            │
+   └────────────┴──▶ CANCELLED
+```
+
+* Mijoz buyurtmani faqat **PENDING** holatida tahrirlaydi yoki bekor qiladi.
+* Diller: `PENDING → CONFIRMED | CANCELLED`, `CONFIRMED → DELIVERED | CANCELLED`.
+* Yetkazilgan va bekor qilingan buyurtma o'zgarmaydi.
+* **Narx va jami summa doim serverda hisoblanadi** — klient yuborgan narxga ishonilmaydi.
+* Buyurtma tarkibiga mahsulot nomi va narxi nusxa (snapshot) sifatida yoziladi, shuning
+  uchun keyinchalik katalog o'zgarsa ham eski buyurtma o'zgarmaydi.
+
+---
+
+## Tezkor ishga tushirish (Docker)
+
+Butun tizim — baza, backend, frontend va bot — bitta buyruq bilan ko'tariladi.
+
+**1. Sozlamalarni tayyorlang**
 
 ```bash
-git clone https://github.com/umidjonaska/MediaBlog.git
-cd MediaBlog
+cp .env.example .env
 ```
 
----
+`.env` faylida kamida quyidagilarni to'ldiring:
 
-## Environment Variables
+| Kalit | Izoh |
+|---|---|
+| `SECRET_KEY` | Tasodifiy, kamida 32 belgi (quyida buyruq bor) |
+| `DB_PASSWORD` | Baza paroli (ixtiyoriy, lekin bo'sh bo'lmasin) |
+| `DB_HOST` | Docker uchun `postgres` |
+| `BOT_TOKEN` | @BotFather bergan token |
+| `WEBAPP_URL` | Mini App manzili, **https://** bilan |
 
-Create a `.env` file based on `.env.example`.
-
----
-
-## Run with Docker
-
-Build and start the application:
+`SECRET_KEY` yaratish:
 
 ```bash
-docker compose up --build
+python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
-This command will:
+**2. Ishga tushiring**
 
-- Start PostgreSQL
-- Start Redis
-- Apply Alembic migrations
-- Start the FastAPI application
-- Start the Telegram bot
+```bash
+docker compose up -d --build
+```
+
+Bu: PostgreSQL'ni ko'taradi, migratsiyalarni bajaradi, backend, frontend (nginx)
+va botni ishga tushiradi.
+
+**3. Administrator yarating**
+
+```bash
+docker compose exec backend python -m app.scripts.create_superadmin --username admin
+```
+
+Parol so'raladi (kamida 10 belgi). Parol kodga yozilmaydi.
+
+**4. Oching**
+
+| Manzil | Nima |
+|---|---|
+| http://localhost:5173 | Frontend (login sahifasi) |
+| http://localhost:8000/docs | Swagger API hujjati |
+
+Administrator sifatida kirib, ketma-ketlik bo'yicha to'ldiring:
+**Dillerlar** → **Kategoriyalar** → **Mahsulotlar**. Shundan keyin mijozlar Mini App orqali
+ro'yxatdan o'tib, buyurtma bera oladi.
 
 ---
 
-## Local Development
+## Lokal ishlab chiqish (Docker'siz)
 
-Install dependencies:
+Talablar: Python 3.12, Node.js 20+, PostgreSQL 16+.
+
+**Backend**
+
+```bash
+python -m venv venv && venv\Scripts\activate
+```
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run database migrations:
+`.env` da `DB_HOST=127.0.0.1` qiling, so'ng bazani yarating va migratsiyalarni bajaring:
+
+```bash
+psql -U postgres -c "CREATE DATABASE supplylink"
+```
 
 ```bash
 alembic upgrade head
 ```
 
-Start the application:
+```bash
+python -m app.scripts.create_superadmin --username admin
+```
 
 ```bash
-uvicorn app.api:app --reload
+python -m uvicorn app.main:app --reload --port 8000
+```
+
+**Frontend**
+
+```bash
+cd web && npm install && npm run dev
+```
+
+Vite `/api` va `/uploads` so'rovlarini backendga uzatadi, shuning uchun brauzer uchun
+hammasi bitta origin bo'lib ko'rinadi va CORS muammosi chiqmaydi.
+
+Backend boshqa portda bo'lsa:
+
+```bash
+VITE_API_PROXY=http://127.0.0.1:8001 npm run dev
+```
+
+**Bot**
+
+```bash
+python -m bot.main
+```
+
+> Bot bir vaqtda faqat **bitta** joyda ishlashi kerak. Docker'dagisi ishlayotgan bo'lsa,
+> avval `docker compose stop bot` qiling — aks holda Telegram `TelegramConflictError` beradi.
+
+---
+
+## Telegram Mini App
+
+1. @BotFather'da bot yarating, tokenni `.env` dagi `BOT_TOKEN` ga qo'ying.
+2. Frontendni **HTTPS** domenda joylashtiring (Telegram `http://` va `localhost` ni qabul qilmaydi).
+3. `.env` da `WEBAPP_URL=https://sizning-domeningiz` deb yozing.
+4. @BotFather → `/setmenubutton` orqali Mini App manzilini ulang.
+
+Autentifikatsiya Telegram `initData` imzosini backendda HMAC-SHA256 bilan tekshirish orqali
+amalga oshiriladi (`app/services/telegram_auth.py`). Imzo yaroqsiz yoki eskirgan bo'lsa kirish rad etiladi.
+
+`WEBAPP_URL` sozlanmagan bo'lsa bot yiqilmaydi — shunchaki Mini App tugmasini ko'rsatmaydi
+va logda nima qilish kerakligini yozadi.
+
+### Lokal sinov (HTTPS'siz)
+
+Telegram `http://localhost` ni qabul qilmaydi. Lokal frontendni Telegram ichida sinash uchun
+tunnel oching:
+
+```bash
+cloudflared tunnel --url http://localhost:5173
+```
+
+Buyruq bergan `https://...trycloudflare.com` manzilini `.env` dagi `WEBAPP_URL` ga yozing va
+botni qayta ishga tushiring:
+
+```bash
+docker compose up -d bot
 ```
 
 ---
 
-## API Documentation
+## Loyiha tuzilmasi
 
-Swagger UI is available at:
-
+```text
+├── app/                        # FastAPI backend
+│   ├── api.py                  # Ilova TO'LIQ shu yerda yig'iladi (router, middleware, xatoliklar)
+│   ├── main.py                 # uvicorn uchun kirish nuqtasi
+│   ├── deps.py                 # Dependency injection
+│   ├── auth/                   # JWT, parol, rol tekshiruvi
+│   ├── core/                   # config, bazaviy sinflar, xatolik javoblari
+│   ├── database/               # Async engine va sessiya
+│   ├── models/                 # SQLAlchemy modellari
+│   │   └── user.py  shop.py  catalog.py  order.py
+│   ├── schemas/                # Pydantic sxemalari
+│   ├── repositories/           # Ma'lumotlar bazasi so'rovlari
+│   ├── services/               # Biznes mantiq
+│   │   ├── order.py            # Buyurtma qoidalari, holat o'tishlari
+│   │   ├── catalog.py          # Kategoriya va mahsulotlar
+│   │   ├── admin.py            # Diller/mijoz boshqaruvi
+│   │   ├── stats.py            # Statistika (SQL agregatsiya)
+│   │   ├── telegram_auth.py    # initData imzosini tekshirish
+│   │   ├── notify.py           # Telegram bildirishnomalari
+│   │   ├── alerts.py           # Server xatoliklari haqida xabar
+│   │   └── uploads.py          # Rasm yuklash va tekshirish
+│   ├── routes/v1/              # SupplyLink API
+│   │   ├── auth.py  me.py  catalog.py  orders.py  diller.py  admin.py
+│   └── scripts/                # create_superadmin
+│
+├── web/                        # React frontend
+│   └── src/
+│       ├── app/                # Telegram Mini App (mijoz)
+│       ├── diller/             # Diller kabineti
+│       ├── admin/              # SUPERADMIN paneli
+│       ├── components/         # UI kutubxonasi, layout, umumiy bloklar
+│       ├── lib/                # API klienti, Telegram, formatlash
+│       ├── store/              # Auth va bildirishnomalar
+│       └── styles/             # Design tokenlar
+│
+├── bot/                        # Telegram bot (Mini App kirish nuqtasi)
+├── migrations/                 # Alembic migratsiyalari
+├── tests/                      # pytest (213 ta test)
+└── docker-compose.yml
 ```
-Backend:
-http://localhost:8000/docs
-Frontend:
-http://localhost:5500
+
+---
+
+## API
+
+To'liq hujjat: http://localhost:8000/docs
+
+Asosiy yo'llar `/api/v1` ostida:
+
+| Guruh | Yo'l | Kim uchun |
+|---|---|---|
+| Auth | `POST /auth/telegram`, `/auth/login`, `/auth/refresh` | Hamma |
+| Profil | `GET /me`, `POST|PUT /me/shop`, `GET /dillers` | Mijoz |
+| Katalog | `GET /categories`, `/products` | Mijoz |
+| Buyurtmalar | `POST|GET /orders`, `PUT /orders/{id}`, `POST /orders/{id}/cancel` | Mijoz |
+| Diller | `/diller/orders`, `/diller/clients`, `/diller/stats` | Diller |
+| Admin | `/admin/dillers`, `/admin/users`, `/admin/categories`, `/admin/products`, `/admin/orders`, `/admin/stats` | Superadmin |
+
+Avtorizatsiya `Authorization: Bearer <access_token>` sarlavhasi orqali. Access token 30 daqiqa
+yashaydi, muddati tugasa frontend uni `refresh_token` bilan avtomatik yangilaydi.
+
+---
+
+## Testlar
+
+```bash
+pytest
+```
+
+Testlar haqiqiy PostgreSQL bazasiga ulanadi (`tests/conftest.py` dagi `supplylink_test`).
+Har bir test uchun jadvallar qaytadan yaratilib, oxirida o'chiriladi.
+
+```bash
+cd web && npm run typecheck
 ```
 
 ---
 
-## Telegram Bot
+## Xavfsizlik
 
-The Telegram bot allows customers to place orders without visiting the website.
-
-The bot asks the customer for:
-
-- Product
-- Quantity
-- Customer name
-- Phone number
-
-After the order is submitted:
-
-- The order is saved to PostgreSQL.
-- Administrators receive a notification.
-- The order becomes available in the web application.
+* Parollar **argon2** bilan xeshlanadi; refresh token bazada SHA-256 xeshi sifatida saqlanadi.
+* Access va refresh tokenlar `typ` claim bilan ajratilgan — refresh tokenni access sifatida
+  ishlatib bo'lmaydi.
+* Rol va bloklash **har bir so'rovda** bazadan tekshiriladi, shuning uchun foydalanuvchini
+  bloklash darhol kuchga kiradi.
+* Yuklangan rasmlar turi, hajmi va haqiqiyligi tekshiriladi; EXIF ma'lumotlari olib tashlanadi.
+* Ommaviy `uploads/` papkasi shaxsiy `media/` papkasidan ajratilgan.
+* Productionda `DEBUG=False` bo'lishi shart — aks holda xatolik matni mijozga qaytariladi.
 
 ---
 
-## Future Improvements
+## Sozlamalar
 
-Some features I plan to add in the future:
+Barcha kalitlar va ularning izohi `.env.example` faylida. Eng muhimlari:
 
-- Shopping cart
-- Product categories
-- Order status tracking
-- Admin dashboard
-- Better frontend UI
-- Improve test coverage
-- GitHub Actions for CI/CD
-- Deployment configuration
-
----
-
-## Author
-
-**Umidjon Askaraliev**
-
-I'm currently learning backend development with Python and FastAPI. This project is part of my portfolio and reflects my approach to building backend applications using a layered architecture and modern development tools.
-
-GitHub: https://github.com/umidjonaska
+| Kalit | Standart | Izoh |
+|---|---|---|
+| `DEBUG` | `False` | Productionda albatta `False` |
+| `SECRET_KEY` | — | Majburiy, kamida 32 belgi |
+| `APP_TIMEZONE` | `Asia/Tashkent` | "Bugun", "shu hafta" chegaralari |
+| `UPLOAD_DIR` | `uploads` | Mahsulot rasmlari |
+| `ALLOWED_ORIGINS` | `localhost:5173` | Vergul bilan; nginx orqali kerak emas |
+| `ADMIN_CHAT_IDS` | — | Server xatoliklari shu chatlarga yuboriladi |
+| `NOTIFY_ENABLED` | `True` | Telegram bildirishnomalari |
 
 ---
 
-## License
+## Muallif
 
-This project is licensed under the MIT License.
+**Umidjon Askaraliev** — https://github.com/umidjonaska
+
+MIT litsenziyasi.

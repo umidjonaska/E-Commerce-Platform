@@ -1,0 +1,70 @@
+.emptyNote {
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+  text-align: center;
+  padding: var(--sp-4) 0;
+}
+
+.pickerList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  max-height: 50dvh;
+  overflow-y: auto;
+}
+
+.pickerItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  text-align: left;
+  transition: background var(--transition), border-color var(--transition);
+  min-width: 0;
+}
+
+.pickerItem:hover:not(:disabled) {
+  background: var(--c-surface-2);
+  border-color: var(--c-brand-border);
+}
+
+.pickerItem:disabled {
+  opacity: 0.55;
+}
+
+.pickerText {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pickerName {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.pickerPrice {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+.pickerAdd {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-full);
+  background: var(--c-brand-soft);
+  color: var(--c-brand);
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+}

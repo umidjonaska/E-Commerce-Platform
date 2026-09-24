@@ -1,0 +1,179 @@
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+}
+
+.time {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.cancelled {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-danger-soft);
+  border: 1px solid var(--c-danger-border);
+  border-radius: var(--r-md);
+}
+
+.cancelled strong {
+  font-size: var(--fs-md);
+  color: var(--c-danger);
+}
+
+.cancelled p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.dim {
+  color: var(--c-text-muted) !important;
+}
+
+/* ---------------- Bloklar ---------------- */
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.blockTitle {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.grid dt {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+  margin-bottom: 2px;
+}
+
+.grid dd {
+  font-size: var(--fs-md);
+  color: var(--c-text);
+  min-width: 0;
+}
+
+.wrap {
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: var(--c-brand);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- Mahsulotlar jadvali ---------------- */
+
+.itemsWrap {
+  overflow-x: auto;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+}
+
+.items {
+  width: 100%;
+  min-width: 420px;
+  font-size: var(--fs-md);
+}
+
+.items th {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-text-muted);
+  background: var(--c-surface-2);
+  border-bottom: 1px solid var(--c-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.items td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.items tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.items tfoot td {
+  padding: var(--sp-3);
+  background: var(--c-surface-2);
+  border-top: 1px solid var(--c-border);
+  border-bottom: none;
+  font-weight: var(--fw-medium);
+}
+
+.right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.strong {
+  font-weight: var(--fw-semibold);
+}
+
+.total {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+}
+
+.note {
+  font-size: var(--fs-md);
+  color: var(--c-text-secondary);
+  padding: var(--sp-3);
+  background: var(--c-surface-2);
+  border-radius: var(--r-md);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------- Amallar ---------------- */
+
+.actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--c-border);
+}
+
+@media (max-width: 560px) {
+  .actions > * {
+    flex: 1 1 auto;
+  }
+}

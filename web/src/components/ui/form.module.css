@@ -1,0 +1,271 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-text-secondary);
+}
+
+.required {
+  color: var(--c-danger);
+}
+
+.hint {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.error {
+  font-size: var(--fs-xs);
+  color: var(--c-danger);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------- Input ---------------- */
+
+.input,
+.textarea,
+.select,
+.inputWrap {
+  width: 100%;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  color: var(--c-text);
+  font-size: var(--fs-md);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.input,
+.select {
+  height: 40px;
+  padding: 0 var(--sp-3);
+}
+
+.textarea {
+  padding: var(--sp-3);
+  min-height: 84px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: var(--lh-normal);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--c-text-muted);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--c-brand);
+  box-shadow: var(--ring);
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  background: var(--c-surface-2);
+  color: var(--c-text-muted);
+  cursor: not-allowed;
+}
+
+.invalid {
+  border-color: var(--c-danger);
+}
+
+.invalid:focus {
+  border-color: var(--c-danger);
+  box-shadow: var(--ring-danger);
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--sp-3);
+  gap: var(--sp-2);
+}
+
+.inputWrap:focus-within {
+  border-color: var(--c-brand);
+  box-shadow: var(--ring);
+}
+
+.prefix {
+  color: var(--c-text-muted);
+  font-size: var(--fs-md);
+  flex: 0 0 auto;
+}
+
+.bareInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: var(--fs-md);
+  color: var(--c-text);
+}
+
+/* ---------------- Select ---------------- */
+
+.selectWrap {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  appearance: none;
+  padding-right: var(--sp-8);
+  cursor: pointer;
+}
+
+.selectArrow {
+  position: absolute;
+  right: var(--sp-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ---------------- Switch ---------------- */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switchDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.switchInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switchTrack {
+  width: 40px;
+  height: 22px;
+  border-radius: var(--r-full);
+  background: var(--c-surface-3);
+  border: 1px solid var(--c-border-strong);
+  position: relative;
+  transition: background var(--transition), border-color var(--transition);
+  flex: 0 0 auto;
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--r-full);
+  background: var(--c-surface);
+  box-shadow: var(--sh-sm);
+  transition: transform var(--transition);
+}
+
+.switchInput:checked + .switchTrack {
+  background: var(--c-brand);
+  border-color: var(--c-brand);
+}
+
+.switchInput:checked + .switchTrack .switchThumb {
+  transform: translateX(18px);
+}
+
+.switchInput:focus-visible + .switchTrack {
+  box-shadow: var(--ring);
+}
+
+.switchLabel {
+  font-size: var(--fs-md);
+  color: var(--c-text);
+}
+
+/* ---------------- Stepper ---------------- */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  overflow: hidden;
+  height: 44px;
+}
+
+.stepperSm {
+  height: 34px;
+}
+
+.stepperBtn {
+  width: 42px;
+  height: 100%;
+  font-size: var(--fs-lg);
+  color: var(--c-text-secondary);
+  background: var(--c-surface-2);
+  transition: background var(--transition), color var(--transition);
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.stepperSm .stepperBtn {
+  width: 32px;
+  font-size: var(--fs-md);
+}
+
+.stepperBtn:hover:not(:disabled) {
+  background: var(--c-surface-3);
+  color: var(--c-text);
+}
+
+.stepperBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.stepperInput {
+  width: 56px;
+  height: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  background: transparent;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+  min-width: 0;
+}
+
+.stepperSm .stepperInput {
+  width: 44px;
+  font-size: var(--fs-sm);
+}
+
+.stepperUnit {
+  padding-right: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}

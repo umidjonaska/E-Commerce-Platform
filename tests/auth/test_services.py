@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 from fastapi import HTTPException
 
@@ -12,6 +12,8 @@ from app.auth.services import (
     authenticate_user,
     get_current_user,
     get_current_admin_user,
+    ACCESS,
+    REFRESH,
 )
 from app.schemas.user import UserRole
 
@@ -119,61 +121,77 @@ async def test_authenticate_user_not_found():
     assert user is None
 
 
-# ---------- GET CURRENT USER (Redis bilan) ----------
+# ---------- TOKEN TURI ----------
 
 @pytest.mark.asyncio
-async def test_get_current_user_cache_hit():
-    db = AsyncMock()
-    token = await create_access_token({"sub": "cached@mail.ru"})
+async def test_refresh_token_is_rejected_as_access_token():
+    refresh = await create_refresh_token({"sub": "1"})
 
-    with patch("auth.services.RedisCLI") as mock_redis_cls:
-        mock_redis = MagicMock()
-        mock_redis.get.return_value = {"id": 1, "email": "cached@mail.ru", "role": "user"}
-        mock_redis_cls.return_value = mock_redis
+    with pytest.raises(HTTPException) as exc_info:
+        await verify_token(refresh, ACCESS)
 
-        user_data = await get_current_user(token=token, db=db)
-
-    assert user_data["email"] == "cached@mail.ru"
-    db.execute.assert_not_called()  # cache hit bo'lgani uchun DB'ga bormasligi kerak
+    assert exc_info.value.status_code == 401
 
 
 @pytest.mark.asyncio
-async def test_get_current_user_cache_miss_fetches_db():
-    db = AsyncMock()
-    token = await create_access_token({"sub": "fresh@mail.ru"})
+async def test_access_token_is_rejected_as_refresh_token():
+    access = await create_access_token({"sub": "1"})
 
-    fake_user = MagicMock(id=2, email="fresh@mail.ru", role="user")
+    with pytest.raises(HTTPException) as exc_info:
+        await verify_token(access, REFRESH)
+
+    assert exc_info.value.status_code == 401
+
+
+# ---------- GET CURRENT USER (DB'dan, keshsiz) ----------
+
+def _db_returning(user):
+    db = AsyncMock()
     result_mock = MagicMock()
-    result_mock.scalar_one_or_none.return_value = fake_user
+    result_mock.scalar_one_or_none.return_value = user
     db.execute.return_value = result_mock
+    return db
 
-    with patch("auth.services.RedisCLI") as mock_redis_cls:
-        mock_redis = MagicMock()
-        mock_redis.get.return_value = None
-        mock_redis_cls.return_value = mock_redis
 
-        user_data = await get_current_user(token=token, db=db)
+@pytest.mark.asyncio
+async def test_get_current_user_reads_user_from_db():
+    token = await create_access_token({"sub": "2"})
+    fake_user = MagicMock(id=2, email="fresh@mail.ru", username="fresh", role=UserRole.USER,
+                          full_name="Fresh", phone=None, is_blocked=False)
 
-    assert user_data["email"] == "fresh@mail.ru"
-    mock_redis.set.assert_called_once()
+    user_data = await get_current_user(token=token, db=_db_returning(fake_user))
+
+    assert user_data["id"] == 2
+    assert user_data["role"] == "user"
 
 
 @pytest.mark.asyncio
 async def test_get_current_user_not_found_in_db_raises_401():
-    db = AsyncMock()
-    token = await create_access_token({"sub": "ghost@mail.ru"})
+    token = await create_access_token({"sub": "99"})
 
-    result_mock = MagicMock()
-    result_mock.scalar_one_or_none.return_value = None
-    db.execute.return_value = result_mock
+    with pytest.raises(HTTPException) as exc_info:
+        await get_current_user(token=token, db=_db_returning(None))
 
-    with patch("auth.services.RedisCLI") as mock_redis_cls:
-        mock_redis = MagicMock()
-        mock_redis.get.return_value = None
-        mock_redis_cls.return_value = mock_redis
+    assert exc_info.value.status_code == 401
 
-        with pytest.raises(HTTPException) as exc_info:
-            await get_current_user(token=token, db=db)
+
+@pytest.mark.asyncio
+async def test_get_current_user_blocked_raises_403():
+    token = await create_access_token({"sub": "3"})
+    blocked = MagicMock(id=3, role=UserRole.USER, is_blocked=True)
+
+    with pytest.raises(HTTPException) as exc_info:
+        await get_current_user(token=token, db=_db_returning(blocked))
+
+    assert exc_info.value.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_rejects_refresh_token():
+    refresh = await create_refresh_token({"sub": "2"})
+
+    with pytest.raises(HTTPException) as exc_info:
+        await get_current_user(token=refresh, db=AsyncMock())
 
     assert exc_info.value.status_code == 401
 

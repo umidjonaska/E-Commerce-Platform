@@ -1,0 +1,75 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-5);
+  background:
+    radial-gradient(1000px 500px at 10% -10%, var(--c-brand-soft), transparent 60%),
+    var(--c-bg);
+}
+
+.panel {
+  width: 100%;
+  max-width: 400px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  padding: var(--sp-8) var(--sp-6);
+  animation: slide-up 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: var(--c-brand);
+  color: #fff;
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.note {
+  font-size: var(--fs-sm);
+  color: var(--c-text-secondary);
+  background: var(--c-info-soft);
+  border: 1px solid var(--c-info-border);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 480px) {
+  .panel {
+    padding: var(--sp-6) var(--sp-5);
+    box-shadow: var(--sh-md);
+  }
+}

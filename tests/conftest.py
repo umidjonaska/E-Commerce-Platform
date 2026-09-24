@@ -10,12 +10,9 @@ from sqlalchemy import text
 
 from app.database.database import Base
 
-from app.models.user import User
-from app.models.post import Post
-from app.models.comment import Comment
-from app.models.media import Media
+import app.models  # noqa: F401  (barcha modellar metadata'ga yuklanadi)
 
-DATABASE_URL = "postgresql+asyncpg://postgres:1234@127.0.0.1/media_blog_test"
+DATABASE_URL = "postgresql+asyncpg://postgres:1234@127.0.0.1/supplylink_test"
 
 
 @pytest_asyncio.fixture
@@ -39,3 +36,14 @@ async def session():
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
         await engine.dispose()
+
+
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _no_real_telegram(monkeypatch):
+    """Testlar hech qachon haqiqiy Telegram Bot API'ga so'rov yubormasligi kerak."""
+    from app.core.config import config
+
+    monkeypatch.setattr(config.telegram, "notify_enabled", False)
