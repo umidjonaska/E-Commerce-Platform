@@ -150,9 +150,9 @@ Kod o'zgarganda qo'lda:
 cd web && vercel --prod
 ```
 
-Yoki GitHub'ga push qilinganda avtomatik bo'lishi uchun Vercel dashboard →
-**Settings** → **Build & Deployment** → **Root Directory** ni `web` qilib
-belgilang (CLI deploy'da bu kerak emas, git integratsiyasida kerak).
+GitHub'ga push qilinganda ham avtomatik deploy bo'ladi — loyihaning
+**Root Directory** sozlamasi `web` qilib belgilangan. Busiz Vercel repo
+ildizida `package.json` qidirib, `ENOENT` xatosi bilan to'xtardi.
 
 ### 4.1. Backend manzilini to'g'rilash
 
